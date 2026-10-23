@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>申込フォーム｜クリニクル運営効率化OS</title>
+<meta name="description" content="クリニクル運営効率化OSの申込フォーム。パソコンでも携帯でも入力でき、内容はメールで送られます。">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap">
+<style>
+:root{--ink:#241f12;--ink-soft:#5d5138;--ground:#fdfaf2;--paper:#ffffff;--accent:#f5b90b;--accent-deep:#8d6a05;--accent-soft:#fbf0cf;--line:#e8ddc4;--bad:#b4321f}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--ink:#ece5d4;--ink-soft:#b0a78d;--ground:#171307;--paper:#201a0c;--accent:#f5b90b;--accent-deep:#e2bd4e;--accent-soft:#2b2410;--line:#3a3220;--bad:#ff8c74}}
+:root[data-theme="dark"]{--ink:#ece5d4;--ink-soft:#b0a78d;--ground:#171307;--paper:#201a0c;--accent:#f5b90b;--accent-deep:#e2bd4e;--accent-soft:#2b2410;--line:#3a3220;--bad:#ff8c74}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN","Hiragino Sans",sans-serif;font-size:16px;line-height:1.8;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:0 16px 60px}
+nav{display:flex;justify-content:space-between;align-items:center;padding:18px 0;gap:12px;flex-wrap:wrap}
+.brandline{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.06em;text-decoration:none;color:var(--ink)}
+.mark{width:16px;height:16px;border:4px solid var(--accent);border-radius:50%}
+nav a.back{font-size:13.5px;color:var(--ink-soft);text-decoration:none}
+h1{font-family:"Shippori Mincho","Hiragino Mincho ProN",serif;font-size:26px;line-height:1.5;margin:28px 0 8px}
+.lede{color:var(--ink-soft);font-size:14.5px;margin:0 0 26px}
+.eyebrow{font-size:11px;letter-spacing:.24em;color:var(--accent-deep);font-weight:700;text-transform:uppercase}
+fieldset{border:1px solid var(--line);background:var(--paper);border-radius:14px;padding:18px 20px 8px;margin:0 0 22px}
+legend{font-family:"Shippori Mincho",serif;font-weight:700;font-size:17px;padding:0 8px}
+label.f{display:block;margin:0 0 16px}
+label.f .t{display:block;font-weight:700;font-size:14px;margin-bottom:4px}
+label.f .t small{font-weight:400;color:var(--ink-soft);margin-left:6px}
+.req{color:var(--bad);font-weight:700;margin-left:4px}
+input[type=text],input[type=email],input[type=tel],input[type=url],textarea{width:100%;font:inherit;font-size:16px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--ground);color:var(--ink)}
+textarea{min-height:80px;resize:vertical}
+input:focus,textarea:focus{outline:3px solid var(--accent);outline-offset:1px;border-color:var(--accent-deep)}
+.opts{display:flex;flex-wrap:wrap;gap:8px 16px;margin:4px 0 0}
+.opts label{display:flex;align-items:center;gap:6px;font-size:15px;cursor:pointer}
+.sub{margin:6px 0 0 24px}
+.chk{display:flex;gap:10px;align-items:flex-start;margin:0 0 12px;font-size:14.5px;cursor:pointer}
+.chk input{margin-top:6px;flex:none;width:18px;height:18px}
+.fee{font-size:14px;color:var(--ink-soft);margin:0 0 14px;padding-left:18px}
+.fee li{margin-bottom:4px}
+.actions{position:sticky;bottom:0;background:var(--ground);padding:14px 0 10px;border-top:1px solid var(--line);display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+button{font:inherit;font-weight:700;font-size:15px;border-radius:999px;padding:12px 26px;cursor:pointer;border:2px solid var(--accent-deep);background:transparent;color:var(--accent-deep)}
+button.main{background:var(--accent);border-color:var(--accent);color:#241f12}
+button:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.msg{font-size:14px;margin:8px 0 0;color:var(--ink-soft)}
+.msg.bad{color:var(--bad);font-weight:700}
+#out{display:none;margin-top:18px}
+#out textarea{min-height:260px;font-size:14px}
+.note{font-size:13px;color:var(--ink-soft);margin:16px 0 0}
+footer{padding:36px 0 0;color:var(--ink-soft);font-size:13px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav>
+  <a class="brandline" href="./"><span class="mark" aria-hidden="true"></span>クリニクル運営効率化OS</a>
+  <a class="back" href="./">← 案内ページへ戻る</a>
+</nav>
+
+<div class="eyebrow">Application</div>
+<h1>申込フォーム</h1>
+<p class="lede">パソコンでも携帯でも、そのまま入力できます。最後の「メールで送る」を押すと、お使いのメールアプリが開き、入力した内容が本文に入った状態で info@clinicle.co.jp 宛てのメールになります。送信ボタンを押すまでは、こちらには何も届きません。</p>
+
+<form id="f" novalidate>
+<fieldset>
+  <legend>1. 医療機関について</legend>
+  <label class="f"><span class="t">医療機関名<span class="req">必須</span></span><input type="text" name="医療機関名" required autocomplete="organization"></label>
+  <label class="f"><span class="t">代表者(先生)のお名前<span class="req">必須</span></span><input type="text" name="代表者" required autocomplete="name"></label>
+  <label class="f"><span class="t">請求書の宛名<small>医療機関名と違うときだけ</small></span><input type="text" name="請求書の宛名"></label>
+  <label class="f"><span class="t">住所<span class="req">必須</span></span><input type="text" name="住所" required placeholder="〒000-0000 北海道札幌市…" autocomplete="street-address"></label>
+  <label class="f"><span class="t">電話<span class="req">必須</span></span><input type="tel" name="電話" required autocomplete="tel"></label>
+  <label class="f"><span class="t">連絡用メールアドレス<span class="req">必須</span><small>請求書・ご案内の送り先</small></span><input type="email" name="メール" required autocomplete="email"></label>
+  <label class="f"><span class="t">ご担当者<small>事務長など。先生ご本人なら空欄のまま</small></span><input type="text" name="担当者" placeholder="お名前と、違う場合はメールアドレス"></label>
+</fieldset>
+
+<fieldset>
+  <legend>2. 環境について</legend>
+  <p class="lede" style="margin-bottom:14px">見立てと最初の設定に使います。</p>
+  <div class="f"><span class="t" style="display:block;font-weight:700;font-size:14px">医療機関の区分<span class="req">必須</span><small style="font-weight:400;color:var(--ink-soft);margin-left:6px">料金が変わります</small></span>
+    <div class="opts"><label><input type="radio" name="区分" value="無床診療所" required>無床診療所</label><label><input type="radio" name="区分" value="有床診療所">有床診療所</label><label><input type="radio" name="区分" value="病院">病院</label></div></div>
+  <div class="f" style="margin-top:14px"><span style="display:block;font-weight:700;font-size:14px">普段お仕事に使うパソコン<span class="req">必須</span></span>
+    <div class="opts"><label><input type="radio" name="PC" value="Windows" required>Windows</label><label><input type="radio" name="PC" value="Mac">Mac</label></div></div>
+  <div class="f" style="margin-top:14px"><span style="display:block;font-weight:700;font-size:14px">電子カルテ<span class="req">必須</span></span>
+    <div class="opts"><label><input type="radio" name="カルテ" value="ブラウザで開くクラウド型" required>ブラウザで開くクラウド型</label><label><input type="radio" name="カルテ" value="院内のパソコンに入れる型">院内のパソコンに入れる型</label><label><input type="radio" name="カルテ" value="使っていない">使っていない</label></div>
+    <div class="sub"><input type="text" name="カルテ名" placeholder="カルテの名称(分かれば)"></div></div>
+  <div class="f" style="margin-top:14px"><span style="display:block;font-weight:700;font-size:14px">Google アカウントの院内利用<span class="req">必須</span><small style="font-weight:400;color:var(--ink-soft);margin-left:6px">無料のものでも可</small></span>
+    <div class="opts"><label><input type="radio" name="Google" value="あり" required>あり</label><label><input type="radio" name="Google" value="なし">なし</label></div></div>
+  <div class="f" style="margin-top:14px"><span style="display:block;font-weight:700;font-size:14px">患者情報を AI に扱わせることについての院内の方針<span class="req">必須</span></span>
+    <div class="opts"><label><input type="radio" name="方針" value="決めている" required>決めている</label><label><input type="radio" name="方針" value="未定">未定</label></div>
+    <div class="sub"><input type="text" name="方針の内容" placeholder="決めている場合は、その内容"></div></div>
+  <label class="f" style="margin-top:14px"><span class="t">GitHub のユーザー名<small>あとからメールでも可</small></span><input type="text" name="GitHub" autocomplete="off" autocapitalize="off"></label>
+  <label class="f"><span class="t">初回セットアップ会の候補日時<small>オンライン30分・画面共有。3つほど</small></span><textarea name="候補日時" placeholder="例: 11/6(木) 13:00〜、11/7(金) 18:30〜、11/10(月) 12:30〜"></textarea></label>
+</fieldset>
+
+<fieldset>
+  <legend>3. 料金とお支払い(確認)</legend>
+  <ul class="fee">
+    <li>最初の3か月(導入期): 月額 30,000円(税抜・税込33,000円)。有床診療所は月額 50,000円(税込55,000円)、病院は月額 70,000円(税込77,000円)。初期費用はありません</li>
+    <li>4か月目以降: 伴走プラン 月額 30,000円(税抜。有床診療所は 50,000円、病院は 70,000円)か、セルフプラン 月額 10,000円(税抜)を毎月選びます(切替は前月末までのお申し出で翌月から。日割りなし)</li>
+    <li>課金の始まり: 初回セットアップ会を行った月は無料。翌月1日から</li>
+    <li>お支払い: 毎月初めにお送りする請求書(PDF)で、当月末までに銀行振込(振込手数料はご負担ください)</li>
+    <li>別途、Claude の有料プラン(個人向け Pro 月額 US$22〜)のご契約が必要です。音声系のレシピで使う AI サービスの利用料も別途です</li>
+  </ul>
+</fieldset>
+
+<fieldset>
+  <legend>4. 確認事項<span class="req">すべて必須</span></legend>
+  <label class="chk"><input type="checkbox" name="確認" value="利用規約を読み、同意します" required><span><a href="クリニクルOS_利用規約.pdf" target="_blank" rel="noopener">利用規約(PDF)</a>を読み、同意します</span></label>
+  <label class="chk"><input type="checkbox" name="確認" value="クリニクルOS本体のスキルは会員の間だけ使えるもので、解約後は削除し使用しないことを確認しました" required><span>クリニクルOS本体のスキルは会員の間だけ使えるもので、解約後は削除し使用しないことを確認しました</span></label>
+  <label class="chk"><input type="checkbox" name="確認" value="作ったツール・文書・進捗の記録は当院の資産で、解約後もそのまま使えることを確認しました" required><span>作ったツール・文書・進捗の記録は当院の資産で、解約後もそのまま使えることを確認しました</span></label>
+  <label class="chk"><input type="checkbox" name="確認" value="患者情報は Claude にも会員ラウンジにも貼らず、何を送ってよいかの判断基準を第0週で身につけることを確認しました" required><span>患者情報は Claude にも会員ラウンジにも貼らず、何を送ってよいかの判断基準を第0週で身につけることを確認しました</span></label>
+  <label class="chk"><input type="checkbox" name="確認" value="AI の出力は自分の目で検証してから院内で使うことを確認しました" required><span>AI の出力は自分の目で検証してから院内で使うことを確認しました</span></label>
+  <label class="chk"><input type="checkbox" name="確認" value="Claude の有料プランと、音声系 AI サービスの利用料は月額に含まれないことを確認しました" required><span>Claude の有料プランと、音声系 AI サービスの利用料は月額に含まれないことを確認しました</span></label>
+  <label class="f" style="margin-top:8px"><span class="t">記名(署名の代わりに、お名前をもう一度)<span class="req">必須</span></span><input type="text" name="記名" required></label>
+</fieldset>
+
+<div class="actions">
+  <button type="submit" class="main">メールで送る</button>
+  <button type="button" id="copy">本文をコピーする</button>
+  <p class="msg" id="msg">「メールで送る」でメールアプリが開かないときは、「本文をコピーする」で内容を写し、info@clinicle.co.jp 宛てのメールに貼って送ってください。</p>
+</div>
+<div id="out">
+  <p class="note">送る内容(コピーしてメールに貼れます):</p>
+  <textarea id="body" readonly></textarea>
+</div>
+<p class="note">お送りいただいた内容は、お申し込みの受付と請求・ご案内のためだけに使い、第三者には渡しません。受付が済んだら、初回セットアップ会の日時をメールでお知らせします。</p>
+</form>
+
+<footer>株式会社クリニクル(Clinicle)　お問い合わせ: info@clinicle.co.jp</footer>
+</div>
+
+<script>
+// 申込メールの本文を組み立てる(純粋な関数。node でも試せる)
+function buildBody(v, today){
+  // メールアプリの本文の長さに上限がある(Windows の Outlook は約2,000字分)ので、短い形にする
+  var L=[];
+  L.push("クリニクル運営効率化OS 申込("+today+")");
+  L.push("");
+  L.push("医療機関名: "+v["医療機関名"]);
+  L.push("代表者: "+v["代表者"]);
+  L.push("請求書の宛名: "+(v["請求書の宛名"]||"同上"));
+  L.push("住所: "+v["住所"]);
+  L.push("電話: "+v["電話"]);
+  L.push("メール: "+v["メール"]);
+  L.push("担当者: "+(v["担当者"]||"先生ご本人"));
+  L.push("");
+  L.push("区分: "+v["区分"]);
+  L.push("PC: "+v["PC"]);
+  L.push("カルテ: "+v["カルテ"]+(v["カルテ名"]?"("+v["カルテ名"]+")":""));
+  L.push("Google: "+v["Google"]);
+  L.push("AI方針: "+v["方針"]+(v["方針の内容"]?"("+v["方針の内容"]+")":""));
+  L.push("GitHub: "+(v["GitHub"]||"あとで"));
+  L.push("候補日時: "+(v["候補日時"]||"あとで相談"));
+  L.push("");
+  L.push("料金とお支払い: 確認済み");
+  L.push("確認事項: "+(v["確認"]||[]).length+"項目すべてに同意(利用規約・解約後の削除・ツールは当院の資産・患者情報を貼らない・出力は自分で検証・Claude等の利用料は別)");
+  L.push("記名: "+v["記名"]);
+  return L.join("\n");
+}
+if (typeof module!=="undefined") module.exports={buildBody:buildBody};
+
+(function(){
+  if (typeof document==="undefined") return;
+  var f=document.getElementById("f"), msg=document.getElementById("msg"), out=document.getElementById("out"), ta=document.getElementById("body");
+  function collect(){
+    var v={}, fd=new FormData(f);
+    fd.forEach(function(val,key){
+      if(key==="確認"){(v[key]=v[key]||[]).push(val);} else {v[key]=String(val).trim();}
+    });
+    return v;
+  }
+  function today(){var d=new Date();return d.getFullYear()+"年"+(d.getMonth()+1)+"月"+d.getDate()+"日";}
+  function check(){
+    var missing=[];
+    f.querySelectorAll("[required]").forEach(function(el){
+      if(el.type==="radio"){ if(!f.querySelector('input[name="'+el.name+'"]:checked')) missing.push(el.name); }
+      else if(el.type==="checkbox"){ if(!el.checked) missing.push("確認事項"); }
+      else if(!el.value.trim()) missing.push(el.name);
+    });
+    missing=missing.filter(function(x,i,a){return a.indexOf(x)===i;});
+    if(missing.length){ msg.textContent="未記入があります: "+missing.join("・"); msg.className="msg bad"; return null; }
+    msg.className="msg"; return collect();
+  }
+  function show(body){ out.style.display="block"; ta.value=body; }
+  f.addEventListener("submit",function(e){
+    e.preventDefault(); var v=check(); if(!v) return;
+    var body=buildBody(v,today()); show(body);
+    var subj="クリニクル運営効率化OS 申込("+v["医療機関名"]+")";
+    msg.textContent="メールアプリが開きます。本文を確かめて送信してください。開かないときは下の本文をコピーして info@clinicle.co.jp へ送ってください。";
+    location.href="mailto:info@clinicle.co.jp?subject="+encodeURIComponent(subj)+"&body="+encodeURIComponent(body);
+  });
+  document.getElementById("copy").addEventListener("click",function(){
+    var v=check(); if(!v) return;
+    var body=buildBody(v,today()); show(body);
+    var done=function(){msg.textContent="コピーしました。info@clinicle.co.jp 宛てのメールに貼って送ってください。";};
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(body).then(done,function(){ta.focus();ta.select();msg.textContent="下の本文を選んでコピーしてください。";});}
+    else{ta.focus();ta.select();try{document.execCommand("copy");done();}catch(e){msg.textContent="下の本文を選んでコピーしてください。";}}
+  });
+})();
+</script>
+</body>
+</html>
