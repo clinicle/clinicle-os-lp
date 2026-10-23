@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>クリニクル運営効率化OS</title>
+<meta name="description" content="医療機関がAIと一緒に院内業務ツールを自作できるようになる伴走型サブスク。実運用医院の35本超のツールから生まれた44本のレシピと、詰まったとき隣にいる伴走。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="クリニクル運営効率化OS｜ツールを買う医院から、ツールを作れる医院へ">
+<meta property="og:description" content="医療機関がAIと一緒に院内業務ツールを自作できるようになる伴走型サブスク。44本のレシピと伴走。2026年10月 正式提供開始。">
+<meta property="og:url" content="https://clinicle.github.io/clinicle-os-lp/">
+<meta property="og:image" content="https://clinicle.github.io/clinicle-os-lp/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="クリニクル運営効率化OS">
+<meta property="og:locale" content="ja_JP">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap">
+<style>
+:root{
+  --ink:#241f12; --ink-soft:#5d5138; --ground:#fdfaf2; --paper:#ffffff;
+  --accent:#f5b90b; --accent-deep:#8d6a05; --accent-soft:#fbf0cf; --line:#e8ddc4;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ink:#ece5d4; --ink-soft:#b0a78d; --ground:#171307; --paper:#201a0c;
+    --accent:#f5b90b; --accent-deep:#e2bd4e; --accent-soft:#2b2410; --line:#3a3220;
+  }
+}
+:root[data-theme="dark"]{
+  --ink:#ece5d4; --ink-soft:#b0a78d; --ground:#171307; --paper:#201a0c;
+  --accent:#f5b90b; --accent-deep:#e2bd4e; --accent-soft:#2b2410; --line:#3a3220;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--ground);color:var(--ink);
+  font-family:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN","Hiragino Sans",sans-serif;
+  font-size:16px;line-height:1.95;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.wrap{max-width:880px;margin:0 auto;padding:0 20px}
+h1,h2,h3.serif{font-family:"Shippori Mincho","Hiragino Mincho ProN",serif;text-wrap:balance;line-height:1.5}
+p{margin:0 0 1.1em}
+.eyebrow{font-size:11px;letter-spacing:.24em;color:var(--accent-deep);font-weight:700;text-transform:uppercase}
+a{color:var(--accent-deep)}
+a.cta{display:inline-block;background:var(--accent);color:#241f12;text-decoration:none;font-weight:700;
+  padding:13px 34px;border-radius:999px;font-size:15px}
+a.cta.ghost{background:transparent;color:var(--accent-deep);border:2px solid var(--accent-deep)}
+a.cta:focus-visible,a:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+
+/* nav */
+nav{display:flex;justify-content:space-between;align-items:center;padding:18px 0;gap:12px;flex-wrap:wrap}
+nav .links{display:flex;gap:18px;font-size:13.5px;flex-wrap:wrap}
+nav .links a{text-decoration:none;color:var(--ink-soft)}
+.brandline{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.06em}
+.mark{width:16px;height:16px;border:4px solid var(--accent);border-radius:50%}
+
+/* hero */
+.hero{padding:56px 0 64px;position:relative;overflow:hidden}
+.rings{position:absolute;right:-140px;top:-120px;width:520px;height:520px;opacity:.55;pointer-events:none}
+.rings circle{fill:none;stroke:var(--accent);stroke-opacity:.28}
+.rings circle.dash{stroke-dasharray:3 7;stroke-opacity:.5}
+.hero h1{font-size:clamp(28px,5.4vw,46px);font-weight:700;margin:14px 0 20px}
+.hero .lede{font-size:17px;color:var(--ink-soft);max-width:34em}
+.hero .ctas{display:flex;gap:14px;flex-wrap:wrap;margin-top:28px}
+.launch{display:inline-block;background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:4px 14px;font-size:12.5px;color:var(--accent-deep);font-weight:700;margin-bottom:6px}
+
+/* stats band */
+.band{background:var(--accent-soft);padding:26px 0}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:18px;text-align:center}
+.stat b{display:block;font-family:"Shippori Mincho",serif;font-size:30px;color:var(--accent-deep);font-variant-numeric:tabular-nums}
+.stat span{font-size:12.5px;color:var(--ink-soft)}
+.band .note{text-align:center;font-size:11.5px;color:var(--ink-soft);margin:14px 0 0}
+
+section.blk{padding:60px 0 8px}
+section.blk h2{font-size:clamp(22px,3.4vw,28px);margin:10px 0 22px}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:26px}
+
+/* pillars */
+.pillars{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px;margin-top:8px}
+.pillar{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:20px 22px}
+.pillar h3{margin:0 0 8px;font-size:16px}
+.pillar p{margin:0;font-size:13.5px;color:var(--ink-soft);line-height:1.8}
+.pillar .no{font-family:"Shippori Mincho",serif;color:var(--accent-deep);font-size:13px;letter-spacing:.1em}
+
+/* catalog */
+.cats{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;margin-top:6px}
+.cat{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:16px 18px}
+.cat h3{margin:0 0 6px;font-size:14.5px;display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.cat h3 small{font-family:"Shippori Mincho",serif;color:var(--accent-deep);font-size:13px;white-space:nowrap}
+.cat ul{margin:0;padding-left:1.1em;font-size:13px;color:var(--ink-soft);line-height:1.75}
+.cat li{margin:0}
+
+/* steps */
+.steps{counter-reset:s;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-top:6px}
+.step{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:18px 20px;position:relative}
+.step::before{counter-increment:s;content:counter(s);font-family:"Shippori Mincho",serif;color:var(--accent-deep);font-size:22px;display:block;margin-bottom:4px}
+.step b{display:block;font-size:15px;margin-bottom:4px}
+.step p{margin:0;font-size:13.5px;color:var(--ink-soft);line-height:1.8}
+
+/* loop */
+.loop{background:var(--accent-soft);border-radius:12px;padding:24px 26px;margin:26px 0 0}
+.loop b.t{font-family:"Shippori Mincho",serif;font-size:17px}
+.loop ol{margin:10px 0 0;padding-left:1.4em}
+.loop li{margin-bottom:5px}
+
+/* safety */
+ul.safe{margin:0;padding-left:1.3em}
+ul.safe li{margin-bottom:10px}
+ul.safe b{color:var(--accent-deep)}
+
+/* pricing */
+.plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px;margin-top:6px}
+.plan{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:22px 24px}
+.plan.main{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.plan .tag{font-size:11.5px;letter-spacing:.12em;color:var(--accent-deep);font-weight:700}
+.plan h3{margin:4px 0 8px;font-size:17px}
+.plan .amt{font-family:"Shippori Mincho",serif;font-size:30px;color:var(--accent-deep);font-variant-numeric:tabular-nums;line-height:1.2}
+.plan .amt small{font-size:13px;color:var(--ink-soft);font-family:inherit}
+.plan ul{margin:12px 0 0;padding-left:1.1em;font-size:13.5px;color:var(--ink-soft);line-height:1.8}
+.plan .alt{margin:8px 0 0;font-size:12.5px;color:var(--ink-soft);line-height:1.65}
+.price{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:20px 24px;margin-top:16px}
+.price .row{display:flex;justify-content:space-between;gap:16px;border-bottom:1px solid var(--line);padding:9px 0;font-size:14px;flex-wrap:wrap}
+.price .row:last-child{border-bottom:none}
+.price .row b{font-variant-numeric:tabular-nums}
+.docs{list-style:none;padding:0;margin:18px 0 0;display:grid;gap:12px}
+.docs li{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:14px 18px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center}
+.docs li a{font-weight:700;font-size:16px}
+.docs li span{font-size:13px;color:var(--ink-soft)}
+.promise{border-left:3px solid var(--accent);padding:6px 0 6px 20px;margin:26px 0 0;font-size:15.5px}
+.promise b{font-family:"Shippori Mincho",serif}
+
+/* faq */
+details{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:12px 18px;margin-bottom:10px}
+summary{cursor:pointer;font-weight:700;font-size:15px}
+details p{margin:8px 0 0;font-size:14px;color:var(--ink-soft)}
+
+/* voice */
+.origin{display:flex;gap:20px;align-items:flex-start;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:24px 26px}
+.origin .bigmark{flex:0 0 auto;width:44px;height:44px;border:10px solid var(--accent);border-radius:50%;margin-top:4px}
+/* contact */
+.contact{background:var(--accent);border-radius:14px;color:#241f12;padding:40px 30px;text-align:center;margin:70px 0 0}
+.contact h2{font-family:"Shippori Mincho",serif;font-size:24px;margin:0 0 10px}
+.contact p{margin:0 0 20px;font-size:14.5px;opacity:.92}
+.contact a.cta{background:#241f12;color:#fdfaf2}
+footer{padding:36px 0 56px;color:var(--ink-soft);font-size:13px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.small{font-size:12.5px;color:var(--ink-soft)}
+@media (max-width:600px){.hero{padding:36px 0 52px}.rings{display:none}section.blk{padding:46px 0 4px}}
+/* print(2026-10-21): 紙・PDFで見るとき。カードの途中で切らない・よくある質問は答えまで出す */
+@media print{
+  @page{size:A4;margin:14mm 12mm}
+  body{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  nav .links,.hero .ctas,.rings{display:none}
+  .hero{padding:16px 0 28px}
+  section.blk{padding:30px 0 4px}
+  .pillar,.cat,.step,.plan,.price .row,details,.loop,.origin,.contact,.promise,ul.safe li{break-inside:avoid}
+  h2,.eyebrow{break-after:avoid}
+  details::details-content{content-visibility:visible;display:block}
+  summary{list-style:none}
+  summary::-webkit-details-marker{display:none}
+  .contact{margin-top:30px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav>
+    <div class="brandline"><span class="mark" aria-hidden="true"></span>クリニクル運営効率化OS</div>
+    <div class="links">
+      <a href="#why">なぜ</a><a href="#how">仕組み</a><a href="#recipes">レシピ</a><a href="#flow">流れ</a><a href="#safety">安全</a><a href="#pricing">料金</a><a href="#docs">書類</a><a href="#faq">よくある質問</a>
+    </div>
+  </nav>
+</div>
+
+<header class="hero">
+  <svg class="rings" viewBox="0 0 520 520" aria-hidden="true">
+    <circle cx="260" cy="260" r="240"/><circle cx="260" cy="260" r="190" class="dash"/><circle cx="260" cy="260" r="140"/><circle cx="260" cy="260" r="90" class="dash"/><circle cx="260" cy="260" r="40"/>
+  </svg>
+  <div class="wrap">
+    <span class="launch">2026年10月 正式提供開始</span>
+    <div class="eyebrow">Clinicle Operating System</div>
+    <h1>ツールを買う医院から、<br>ツールを作れる医院へ。</h1>
+    <p class="lede">クリニクル運営効率化OSは、医療機関がAIと一緒に院内業務ツールを自作できるようになる伴走型のサブスクです。売っているのは完成品ではなく、実際の医院で生まれた「作り方の型」と、詰まったとき隣にいる伴走です。</p>
+    <div class="ctas">
+      <a class="cta" href="mailto:info@clinicle.co.jp?subject=%E3%82%AF%E3%83%AA%E3%83%8B%E3%82%AF%E3%83%ABOS%E3%81%AE%E7%9B%B8%E8%AB%87">メールで相談する</a>
+      <a class="cta ghost" href="#how">仕組みを見る</a>
+    </div>
+  </div>
+</header>
+
+<div class="band">
+  <div class="wrap">
+    <div class="stats">
+      <div class="stat"><b>44</b><span>レシピ(作り方の型)+読み物1本</span></div>
+      <div class="stat"><b>31</b><span>実運用医院で稼働中のものから作りを読み取ったレシピ</span></div>
+      <div class="stat"><b>35+</b><span>院内で実運用中の自作ツール</span></div>
+      <div class="stat"><b>3,200万字</b><span>教材の元になった開発記録</span></div>
+    </div>
+    <p class="note">すべて、プログラマー不在の整形外科クリニック1院の実録から生まれました。</p>
+  </div>
+</div>
+
+<main class="wrap">
+
+<section class="blk" id="why">
+  <div class="eyebrow">Why</div>
+  <h2>ベンダー任せでは、現場の「あと一歩」は埋まらない</h2>
+  <div class="two">
+    <p>電子カルテもレセコンも入っている。それでも毎日、転記・手計算・二重チェック・声かけ確認が残ります。ベンダーに頼むほどではない、でも毎日数十分を奪う「あと一歩」。ここは既製品では埋まりません。医院ごとに形が違うからです。</p>
+    <p>生成AIの登場で、この「あと一歩」を<b>現場の自分たちで埋められる</b>時代になりました。私たちは一つの医院でそれを1年半実践し、音声カルテからレセプトチェックまで35本以上を自作しました。その全過程を、他の医院が再現できる形に整理したのがこのOSです。</p>
+  </div>
+</section>
+
+<section class="blk" id="how">
+  <div class="eyebrow">How</div>
+  <h2>OSの中身は、三つ。</h2>
+  <div class="pillars">
+    <div class="pillar"><span class="no">一</span><h3>レシピ。作り方の型</h3><p>6分野44本。完成品のコピーではなく、AIが貴院のカルテ・運用に合わせて作り直せる「型」。実運用医院で動いているものから読み取った作りの要点と、品質の下限が書いてあります。</p></div>
+    <div class="pillar"><span class="no">二</span><h3>伴走。詰まったときの隣</h3><p>Claudeに「クリニクルOSを開いて」と話しかけるだけで、OSが環境を聞き、レシピを選び、動くところまで一緒に作ります。迷ったら12週の標準カリキュラム。伴走プランの月2回のオフィスアワーと、全プラン共通の会員ラウンジ(Discord)が「詰まったときの孤独」を潰します。</p></div>
+    <div class="pillar"><span class="no">三</span><h3>還流。会員の輪で育つ知見</h3><p>各医院のつまずきと工夫は、送るかどうかを毎回医院が選んだうえで、仮名でレシピに反映され、全会員へ自動配信。会員が増えるほどレシピは賢く、転ばなくなります。</p></div>
+  </div>
+  <div class="loop">
+    <b class="t">クリニクル = Clinic × Circle(そして Chronicle)</b>
+    <ol>
+      <li>レシピでツールを作る。つまずきと工夫が記録される</li>
+      <li>知見を非同定化してOSに還す。送るかどうかは毎回医院が選ぶ</li>
+      <li>検証のうえレシピが改訂され、全会員に自動配信される</li>
+      <li>あなたのつまずきが、次の医院の近道になる。採用された知見は更新履歴に仮名で載り、新レシピには提案者が名前を付けられます</li>
+    </ol>
+  </div>
+</section>
+
+<section class="blk" id="recipes">
+  <div class="eyebrow">Recipes</div>
+  <h2>6分野・44本のレシピ(2026年10月現在)</h2>
+  <p class="small">各レシピには「何ができるか・完成形・必要なもの・患者情報の扱い」が書いてあり、Pythonが要るかどうかも先に分かります。スプレッドシート系・カルテ画面系はPython不要です。</p>
+  <div class="cats">
+    <div class="cat"><h3>診療(記録づくり・診察の補助)<small>11本</small></h3><ul><li>診察の音声からカルテ下書きを作る</li><li>看護師の問診・リハの所見を音声から記録</li><li>紹介状の下書き・お薬一覧・休薬チェック</li><li>小児の薬の量の自動計算</li></ul></div>
+    <div class="cat"><h3>カルテ画面の便利機能<small>13本</small></h3><ul><li>カルテ内のキーワード検索とハイライト</li><li>関節可動域の推移を一覧表示</li><li>リハの算定期限を自動計算</li><li>予約票をワンクリックで印刷</li></ul></div>
+    <div class="cat"><h3>医事・レセプト<small>7本</small></h3><ul><li>査定データの取り込みと再請求支援</li><li>レセプトの提出前チェック</li><li>リハ単位の突合(電カル×会計ソフト)</li><li>傷病手当金の書類をかんたん入力</li></ul></div>
+    <div class="cat"><h3>人事・総務・労務<small>5本</small></h3><ul><li>勤務表と勤怠の自動集計</li><li>有給申請をウェブ化する</li><li>担当表・シフト表をAIで作る</li><li>院内の物品発注(紙の発注書をなくす)</li></ul></div>
+    <div class="cat"><h3>院内の情報・その他<small>7本</small></h3><ul><li>最初に作る練習用の小さな道具</li><li>院内マニュアルをAIで作る</li><li>院内Q&amp;Aチャットボット</li><li>音声から議事録・記録を自動でつくる</li></ul></div>
+    <div class="cat"><h3>患者情報を守るしくみ/読み物<small>1本+読み物</small></h3><ul><li>患者情報の匿名化(氏名を自動で伏せる)</li><li>AI音声カルテを育てた6段階の記録</li><li>AI利用規約ガイド・法令とガイドラインの線引き(同梱)</li></ul></div>
+  </div>
+</section>
+
+<section class="blk" id="flow">
+  <div class="eyebrow">Flow</div>
+  <h2>始めてから、動くまで。</h2>
+  <div class="steps">
+    <div class="step"><b>メールで相談</b><p>貴院の環境(カルテの種類・Googleアカウントの有無・患者情報の院内方針)に合うかの見立てだけでも歓迎です。</p></div>
+    <div class="step"><b>30分の初回セットアップ会</b><p>画面共有で一緒に導入します。入力するコマンドは2つだけ。導入はパソコン1台でよく、作ったツールは院内の共有フォルダから全端末で使えます。</p></div>
+    <div class="step"><b>第0週から、12週で一通り</b><p>小さな道具で成功体験、休薬チェックや傷病手当の入力、音声カルテ、査定データとレセプトチェックまで。迷わない人はカタログから自由に選べます。</p></div>
+    <div class="step"><b>4か月目からはプランを毎月選ぶ</b><p>伴走を続けるか、自走に切り替えるかを毎月選べます。大物に挑む月だけ伴走に戻すこともできます。</p></div>
+  </div>
+</section>
+
+<section class="blk" id="safety">
+  <div class="eyebrow">Safety</div>
+  <h2>患者情報は、設計で守る</h2>
+  <ul class="safe">
+    <li><b>ローカルファースト。</b>外部送信なしで足りるツールは、設計段階で外部送信なしに固定。「このツールはPCの中だけで動く」と一言で説明できることを重視します。</li>
+    <li><b>使うAIサービスを先に選ぶ。</b>音声系のレシピは着手前に、文字起こし・要約のAIサービスを比較表(事業者向けか・データ保持・学習利用・料金の目安)を見ながら選びます。個人向けプランのチャットには実患者のデータを貼りません。</li>
+    <li><b>伴走AIにもガードレール。</b>教材のAI自身が「実物データはまだ貼らないでください」と先回りで案内し、見本のデータで作ってから本番に移ります。</li>
+    <li><b>法令・ガイドラインの一次資料で整理。</b>厚労省ガイドライン第7.0版、経産省・総務省ガイドライン、個人情報保護法と医療・介護ガイダンスを読み込んだ「法令とガイドラインの線引き」と、主要AIサービスの利用規約ガイドを同梱しています。</li>
+  </ul>
+</section>
+
+<section class="blk" id="pricing">
+  <div class="eyebrow">Pricing</div>
+  <h2>価格は公開。囲い込みはしない。</h2>
+  <div class="plans">
+    <div class="plan main"><span class="tag">最初の3か月</span><h3>導入期</h3><div class="amt">月 3万円<small>(税抜・税込33,000円)</small></div><p class="alt">無床診療所の料金です。有床診療所は月5万円(税込55,000円)、病院は月7万円(税込77,000円)</p><ul><li>月2回のオフィスアワー</li><li>個別支援(詰まったら駆け込める)</li><li>初回セットアップ会(30分)</li></ul></div>
+    <div class="plan"><span class="tag">4か月目以降・毎月選べる</span><h3>伴走プラン</h3><div class="amt">月 3万円<small>(税抜・税込33,000円)</small></div><p class="alt">無床診療所の料金です。有床診療所は月5万円(税込55,000円)、病院は月7万円(税込77,000円)</p><ul><li>月2回のオフィスアワー</li><li>個別支援・新しいツールの張り付き</li></ul></div>
+    <div class="plan"><span class="tag">4か月目以降・毎月選べる</span><h3>セルフプラン</h3><div class="amt">月 1万円<small>(税抜・税込11,000円)</small></div><ul><li>月1回のグループ会</li><li>会員ラウンジでの質問</li></ul></div>
+  </div>
+  <div class="price">
+    <div class="row"><span>初期費用</span><b>0円</b></div>
+    <div class="row"><span>全プラン共通</span><b>レシピ全44本・改訂と新レシピの自動配信・知見の還流・会員ラウンジ(Discord)。ツール導入は無制限</b></div>
+    <div class="row"><span>お支払い</span><b>月初に請求書(PDF)をお送りし、当月末までに銀行振込。初回セットアップ会の月は無料で、翌月1日から課金</b></div>
+    <div class="row"><span>プランの切替</span><b>前月末までの申告で翌月から。日割りなし</b></div>
+    <div class="row"><span>別途実費</span><b>Claudeの有料プラン(個人向けProは月額US$22〜)。音声系レシピで使うAIサービスの利用料(使った分だけ)</b></div>
+    <div class="row"><span>解約</span><b>いつでも。前月末までのお申し出で翌月から(日割りなし)。OS本体は会員期間中だけお使いいただくもので、解約後14日以内に削除していただきます(作ったツールは残ります)</b></div>
+  </div>
+  <p class="promise"><b>約束。</b>作ったツールはすべて貴院の資産です。解約後も動き続けます。解約はいつでも自由、価格は公開。私たちが売るのは「変化に追随し続ける仕組みと、会員の輪で育つ知見」であって、囲い込みではありません。</p>
+  <p class="small">※ 金額はすべて税抜で表示し、括弧内が税込です。AI利用料はプログラム費用と分けて明示します。</p>
+</section>
+
+<section class="blk" id="docs">
+  <div class="eyebrow">Documents</div>
+  <h2>ご契約の書類</h2>
+  <p>お申し込みの前に利用規約をお読みください。申込書は、印刷して記入したものを写真やスキャンで送っていただくか、項目をメールの返信に書いていただくだけでも受け付けます。</p>
+  <ul class="docs">
+    <li><a href="クリニクルOS_利用規約.pdf" download>利用規約(PDF・4ページ)</a><span>2026年10月20日 適用</span></li>
+    <li><a href="クリニクルOS_申込書.pdf" download>申込書(PDF・2ページ)</a><span>記入後 info@clinicle.co.jp へ</span></li>
+  </ul>
+</section>
+
+<section class="blk" id="faq">
+  <div class="eyebrow">FAQ</div>
+  <h2>よくある質問</h2>
+  <details><summary>プログラミングの経験がなくても大丈夫ですか</summary><p>はい。このOSは、プログラマーのいない医院で生まれました。コマンドを打つのは導入の2つだけで、以後はClaudeに日本語で話しかけるだけです。黒い画面でコマンドを打たせない作りにしています。</p></details>
+    <details><summary>どんな電子カルテでも使えますか</summary><p>カルテに依存しないレシピ(書類・集計・音声記録など)はどの医院でも使えます。カルテ画面に機能を足すレシピは、ブラウザで開くクラウド型カルテが対象です。最初の相談で見立てをお伝えします。</p></details>
+  <details><summary>完成したツールをもらえるのですか</summary><p>いいえ。実運用医院のアプリそのものは配りません。配るのはレシピ(作り方・品質の下限・参考例・育て方)と伴走で、貴院の環境に合わせてAIと一緒に作ります。だから、できたツールは貴院の資産で、解約後も動き続けます(削除していただくのは、会員期間中だけお使いいただくOS本体だけです)。</p></details>
+  <details><summary>患者情報をAIに送ることになりますか</summary><p>外部送信なしで足りるツールは外部に送りません。音声カルテなど送る必要があるものは、事業者向けの契約で委託として整理できるサービスを先に選び、見本のデータで作ってから本番に移ります。判断の根拠になる法令・ガイドラインの整理資料を同梱しています。</p></details>
+  <details><summary>月額のほかに、いくらかかりますか</summary><p>Claudeの有料プラン(個人向けProは月額US$22〜)が必要です。音声系のレシピでは、文字起こしや要約のAIサービスの利用料が使った分だけかかります。いずれもプログラム費用と分けてお伝えします。</p></details>
+</section>
+
+<section class="blk" id="who">
+  <div class="eyebrow">Who we are</div>
+  <h2>提供するのは、同じ現場を歩いた会社です</h2>
+  <div class="origin">
+    <span class="bigmark" aria-hidden="true"></span>
+    <div>
+      <p>株式会社クリニクル(Clinicle)。社名は「クリニック」と「サークル(会員の輪)」の掛け合わせで、「クロニクル(記録)」にも掛けています。医院の記録が、会員の輪の中で育っていく。このOSの仕組みそのものを社名にしました。</p>
+      <p style="margin:0">母体は、AIツール自作を1年半実践してきた整形外科クリニックの現場です。きれいごとではなく、幻覚も誤読も査定も経験した上で、その避け方ごとお渡しします。</p>
+    </div>
+  </div>
+</section>
+
+<div class="contact" id="contact">
+  <h2>まずは、話だけでも。</h2>
+  <p>2026年10月、正式に提供を始めました。貴院の環境に合うかどうかの見立てだけでも歓迎です。</p>
+  <a class="cta" href="mailto:info@clinicle.co.jp?subject=%E3%82%AF%E3%83%AA%E3%83%8B%E3%82%AF%E3%83%ABOS%E3%81%AE%E7%9B%B8%E8%AB%87">info@clinicle.co.jp に相談する</a>
+</div>
+
+<footer>
+  <div>株式会社クリニクル(Clinicle)</div>
+  <div>お問い合わせ: <a href="mailto:info@clinicle.co.jp">info@clinicle.co.jp</a></div>
+</footer>
+</main>
+<script>
+// 印刷するときだけ、よくある質問を全部開く(終わったら元に戻す)
+(function(){var opened=[];
+addEventListener('beforeprint',function(){opened=[];document.querySelectorAll('details:not([open])').forEach(function(d){d.open=true;opened.push(d)})});
+addEventListener('afterprint',function(){opened.forEach(function(d){d.open=false})})})();
+</script>
+</body>
+</html>
