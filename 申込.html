@@ -43,6 +43,7 @@ input:focus,textarea:focus{outline:3px solid var(--accent);outline-offset:1px;bo
 .fee{font-size:16px;color:var(--ink-soft);margin:0 0 14px;padding-left:18px}
 .fee li{margin-bottom:4px}
 .actions{position:sticky;bottom:0;background:var(--ground);padding:14px 0 10px;border-top:1px solid var(--line);display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+@media (max-width:600px){.actions{position:static}}  /* スマホでは下に貼り付けない(文字を大きくしたら帯が画面の3分の1を覆ったため。2026-10-25) */
 button{font:inherit;font-weight:700;font-size:17px;border-radius:999px;padding:12px 26px;cursor:pointer;border:2px solid var(--accent-deep);background:transparent;color:var(--accent-deep)}
 button.main{background:var(--accent);border-color:var(--accent);color:#1b2a33}
 button:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
@@ -87,8 +88,8 @@ footer{padding:36px 0 0;color:var(--ink-soft);font-size:15px}
   <div class="f" style="margin-top:14px"><span style="display:block;font-weight:700;font-size:16.5px">診療以外の業務に使うパソコン<span class="req">必須</span><small style="font-weight:400;color:var(--ink-soft);margin-left:6px">院長・職員の書類作り・事務など</small></span>
     <div class="opts"><label><input type="radio" name="業務PC" value="Windows" required>Windows</label><label><input type="radio" name="業務PC" value="Mac">Mac</label><label><input type="radio" name="業務PC" value="両方">両方</label></div></div>
   <div class="f" style="margin-top:14px"><span style="display:block;font-weight:700;font-size:16.5px">電子カルテ<span class="req">必須</span></span>
-    <div class="opts"><label><input type="radio" name="カルテ" value="ブラウザで開くクラウド型" required>ブラウザで開くクラウド型</label><label><input type="radio" name="カルテ" value="院内のパソコンに入れる型">院内のパソコンに入れる型</label><label><input type="radio" name="カルテ" value="使っていない">使っていない</label></div>
-    <div class="sub"><input type="text" name="カルテ名" placeholder="カルテの名称(分かれば)"></div></div>
+    <div class="opts"><label><input type="radio" name="カルテ" value="クラウド型" required>クラウド型</label><label><input type="radio" name="カルテ" value="オンプレ型">オンプレ型</label><label><input type="radio" name="カルテ" value="その他">その他</label></div>
+    <div class="sub"><input type="text" name="カルテ名" placeholder="カルテの名称(分かれば)。その他の場合はその内容"></div></div>
   <div class="f" style="margin-top:14px"><span style="display:block;font-weight:700;font-size:16.5px">Google アカウントの院内利用<span class="req">必須</span><small style="font-weight:400;color:var(--ink-soft);margin-left:6px">無料のものでも可</small></span>
     <div class="opts"><label><input type="radio" name="Google" value="あり" required>あり</label><label><input type="radio" name="Google" value="なし">なし</label></div></div>
   <div class="f" style="margin-top:14px"><span style="display:block;font-weight:700;font-size:16.5px">患者情報を AI に扱わせることについての院内の方針<span class="req">必須</span></span>
