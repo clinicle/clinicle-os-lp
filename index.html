@@ -139,7 +139,7 @@ ul.safe b{color:var(--accent-deep)}
 .flow{--g:14px;display:grid;grid-template-columns:minmax(0,0.85fr) 56px minmax(0,1.15fr);grid-template-rows:auto 1fr}
 .flow .intro{grid-column:1;grid-row:2;align-self:stretch;display:flex;flex-direction:column;justify-content:center}  /* 左の1枠と右の2枠の高さを揃える */
 .flow .branch{grid-column:2;grid-row:2}
-.flow .chl{grid-row:1;font-size:1.5rem;letter-spacing:.04em;color:var(--accent-deep);font-weight:700;margin:0 0 10px 4px;line-height:1.4}  /* 2026-10-25 院長: 枠の上の見出しは2倍に */
+.flow .chl{grid-row:1;font-size:1.2rem;letter-spacing:.04em;color:var(--accent-deep);font-weight:700;margin:0 0 10px 4px;line-height:1.4}  /* 2026-10-25 院長: 枠の上の見出しは2倍に */
 .flow .chl.c1{grid-column:1}
 .flow .chl.c3{grid-column:3}
 .flow .plan h3{font-size:1.333rem;margin:0 0 4px}  /* プラン名は元の約1.2倍(2倍・1.5倍は大きすぎた。2026-10-25 院長) */
@@ -153,6 +153,8 @@ ul.safe b{color:var(--accent-deep)}
 .choices .plan ul{margin-top:4px;line-height:1.6}
 .flow .plan .amt{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:12px}
 .flow .plan .amt small{margin:0}  /* 枠が広いので(税抜…)は「万円」の右に。狭い画面では自然に次の行へ */
+.flow .plan .amt .v{font-weight:700}
+.flow .plan .amt .u{text-decoration:underline;text-decoration-thickness:3px;text-underline-offset:6px}  /* 「月額 ○万円」を太字+下線で強調(2026-10-25 院長) */
 .plan li.disc{color:var(--ink)}
 .plan li.disc b{color:var(--accent-deep)}
 .branch{position:relative;align-self:stretch}
@@ -164,7 +166,7 @@ ul.safe b{color:var(--accent-deep)}
   .branch::before,.branch::after{display:none}
   .flow .chl{margin:0 0 0 28px;padding:2px 0 10px 18px;border-left:3px solid var(--accent)}
   .flow .chl.c1{margin:0 0 10px 4px;padding:0;border-left:0}
-  .flow .chl{font-size:1.25rem}
+  .flow .chl{font-size:1rem}
   .choices{margin-left:28px;padding-left:18px;border-left:3px solid var(--accent);grid-auto-rows:auto}
   .choices .plan{position:relative}
   .choices .plan::before{content:"";position:absolute;left:-21px;top:50%;width:19px;border-top:3px solid var(--accent)}
@@ -335,12 +337,12 @@ footer{padding:36px 0 56px;color:var(--ink-soft);font-size:0.833rem;display:flex
   </div>
   <div class="flow">
     <div class="chl c1">最初の3か月</div>
-    <div class="plan main intro"><h3>導入期</h3><div class="amt"><span class="v">月額 3万円<sup>※</sup></span><small>(税抜・税込33,000円)</small></div><ul><li>月2回のオフィスアワー</li><li>個別支援(詰まったら駆け込める)</li><li>初回セットアップ会(30分)</li></ul></div>
+    <div class="plan main intro"><h3>導入期</h3><div class="amt"><span class="v"><span class="u">月額 3万円</span><sup>※</sup></span><small>(税抜・税込33,000円)</small></div><ul><li>月2回のオフィスアワー</li><li>個別支援(詰まったら駆け込める)</li><li>初回セットアップ会(30分)</li></ul></div>
     <div class="branch" aria-hidden="true"></div>
     <div class="chl c3"><span class="nw">4か月目から、</span><span class="nw">どちらかを選ぶ</span></div>
     <div class="choices">
-      <div class="plan"><h3>伴走プラン</h3><div class="amt"><span class="v">月額 3万円<sup>※</sup></span><small>(税抜・税込33,000円)</small></div><ul><li>月2回のオフィスアワー</li><li>個別支援(新しいツールは完成まで付き添い)</li></ul></div>
-      <div class="plan"><h3>セルフプラン</h3><div class="amt"><span class="v">月額 1万円</span><small>(税抜・税込11,000円)</small></div><ul><li class="disc">知見の還流が採用された翌月は<b>最大5,000円引き</b></li></ul></div>
+      <div class="plan"><h3>伴走プラン</h3><div class="amt"><span class="v"><span class="u">月額 3万円</span><sup>※</sup></span><small>(税抜・税込33,000円)</small></div><ul><li>月2回のオフィスアワー</li><li>個別支援(新しいツールは完成まで付き添い)</li></ul></div>
+      <div class="plan"><h3>セルフプラン</h3><div class="amt"><span class="v"><span class="u">月額 1万円</span></span><small>(税抜・税込11,000円)</small></div><ul><li class="disc">知見の還流が採用された翌月は<b>最大5,000円引き</b></li></ul></div>
     </div>
   </div>
   <p class="pnote">※ 月額3万円は無床診療所の料金です。有床診療所は月額5万円(税込55,000円)、病院は月額7万円(税込77,000円)。</p>
@@ -361,7 +363,7 @@ footer{padding:36px 0 56px;color:var(--ink-soft);font-size:0.833rem;display:flex
   <p>お申し込みは、パソコンでも携帯でも入力できる申込フォームからどうぞ。入力した内容がメールになって、お使いのメールアプリから送れます。</p>
   <ul class="docs">
     <li><a href="申込.html">申込フォーム(入力してメールで送る)</a><span>パソコン・携帯どちらでも</span></li>
-    <li><a href="クリニクルOS_利用規約.pdf" download>利用規約(PDF・4ページ)</a><span>2026年10月20日 適用</span></li>
+    <li><a href="クリニクルOS_利用規約.pdf" download>利用規約(PDF・4ページ)</a><span>2026年10月25日 適用</span></li>
   </ul>
 </section>
 
