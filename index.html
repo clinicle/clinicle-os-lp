@@ -132,6 +132,27 @@ ul.safe b{color:var(--accent-deep)}
 .plan .amt small{font-size:0.833rem;color:var(--ink-soft);font-family:inherit;display:block;margin-top:6px;white-space:nowrap}  /* 「万円」のあとで改行し、(税抜・税込…)は次の行に1行で(2026-10-25 院長) */
 .plan ul{margin:12px 0 0;padding-left:1.1em;font-size:0.917rem;color:var(--ink-soft);line-height:1.8}
 .plan .alt{margin:8px 0 0;font-size:0.833rem;color:var(--ink-soft);line-height:1.65}
+/* 料金(2026-10-25 院長): 全プラン共通のものを先に。導入期から伴走・セルフに分かれる図(トーナメントの線) */
+.common{background:var(--accent-soft);border-radius:12px;padding:18px 24px;margin:6px 0 22px}
+.common .ct{font-weight:700;color:var(--accent-deep);font-size:0.917rem;margin-bottom:6px}
+.common ul{margin:0;padding-left:1.2em;font-size:0.917rem;line-height:1.8}
+.flow{--g:16px;display:grid;grid-template-columns:minmax(0,1fr) 56px minmax(0,1fr);align-items:center}
+.flow .intro{align-self:center}
+.choices{display:grid;grid-auto-rows:1fr;gap:var(--g);align-self:stretch}
+.branch{position:relative;align-self:stretch}
+.branch::before{content:"";position:absolute;left:0;width:50%;top:50%;border-top:3px solid var(--accent)}
+.branch::after{content:"";position:absolute;left:50%;right:0;top:calc((100% - var(--g))/4);bottom:calc((100% - var(--g))/4);border:3px solid var(--accent);border-right:0;border-radius:8px 0 0 8px}
+@media (max-width:700px){
+  .flow{display:block}
+  .branch{height:28px;margin-left:28px;border-left:3px solid var(--accent)}
+  .branch::before,.branch::after{display:none}
+  .choices{margin-left:28px;padding-left:18px;border-left:3px solid var(--accent);grid-auto-rows:auto}
+  .choices .plan{position:relative}
+  .choices .plan::before{content:"";position:absolute;left:-21px;top:50%;width:19px;border-top:3px solid var(--accent)}
+  .choices .plan:last-child::after{content:"";position:absolute;left:-24px;top:calc(50% + 3px);bottom:-2px;width:8px;background:var(--ground)}
+}
+.plan .amt sup{font-size:0.6em;vertical-align:top;margin-left:2px}
+.pnote{font-size:0.833rem;color:var(--ink-soft);margin:12px 0 0;line-height:1.7}
 .price{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:20px 24px;margin-top:16px}
 .price .row{display:flex;justify-content:space-between;gap:16px;border-bottom:1px solid var(--line);padding:9px 0;font-size:0.917rem;flex-wrap:wrap}
 .price .row:last-child{border-bottom:none}
@@ -283,14 +304,27 @@ footer{padding:36px 0 56px;color:var(--ink-soft);font-size:0.833rem;display:flex
 <section class="blk" id="pricing">
   <div class="eyebrow">Pricing</div>
   <h2><span class="nw">価格は公開。</span><span class="nw">囲い込みはしない。</span></h2>
-  <div class="plans">
-    <div class="plan main"><span class="tag">最初の3か月</span><h3>導入期</h3><div class="amt">月額 3万円<small>(税抜・税込33,000円)</small></div><p class="alt">無床診療所の料金です。有床診療所は月額5万円(税込55,000円)、病院は月額7万円(税込77,000円)</p><ul><li>月2回のオフィスアワー</li><li>個別支援(詰まったら駆け込める)</li><li>初回セットアップ会(30分)</li></ul></div>
-    <div class="plan"><span class="tag">4か月目以降・毎月選べる</span><h3>伴走プラン</h3><div class="amt">月額 3万円<small>(税抜・税込33,000円)</small></div><p class="alt">無床診療所の料金です。有床診療所は月額5万円(税込55,000円)、病院は月額7万円(税込77,000円)</p><ul><li>月2回のオフィスアワー</li><li>個別支援・新しいツールの張り付き</li></ul></div>
-    <div class="plan"><span class="tag">4か月目以降・毎月選べる</span><h3>セルフプラン</h3><div class="amt">月額 1万円<small>(税抜・税込11,000円)</small></div><ul><li>月1回のグループ会</li><li>会員ラウンジでの質問</li></ul></div>
+  <div class="common">
+    <div class="ct">すべてのプランに含まれるもの</div>
+    <ul>
+      <li>クリニクルOS本体(Claude の中で動く伴走AI。「クリニクルOSを開いて」で呼び出します)</li>
+      <li>レシピ全44本と、改訂・新レシピの自動配信</li>
+      <li>会員ラウンジ(Discord)での質問・交流</li>
+      <li>知見の還流(各医院のつまずきと工夫が、仮名でレシピに反映)</li>
+      <li>ツールの導入は無制限</li>
+    </ul>
   </div>
+  <div class="flow">
+    <div class="plan main intro"><span class="tag">最初の3か月</span><h3>導入期</h3><div class="amt">月額 3万円<sup>※</sup><small>(税抜・税込33,000円)</small></div><ul><li>月2回のオフィスアワー</li><li>個別支援(詰まったら駆け込める)</li><li>初回セットアップ会(30分)</li></ul></div>
+    <div class="branch" aria-hidden="true"></div>
+    <div class="choices">
+      <div class="plan"><span class="tag">4か月目から・毎月選べる</span><h3>伴走プラン</h3><div class="amt">月額 3万円<sup>※</sup><small>(税抜・税込33,000円)</small></div><ul><li>月2回のオフィスアワー</li><li>個別支援・新しいツールの張り付き</li></ul></div>
+      <div class="plan"><span class="tag">4か月目から・毎月選べる</span><h3>セルフプラン</h3><div class="amt">月額 1万円<small>(税抜・税込11,000円)</small></div><ul><li>月1回のグループ会</li></ul></div>
+    </div>
+  </div>
+  <p class="pnote">※ 月額3万円は無床診療所の料金です。有床診療所は月額5万円(税込55,000円)、病院は月額7万円(税込77,000円)。</p>
   <div class="price">
     <div class="row"><span>初期費用</span><b>0円</b></div>
-    <div class="row"><span>全プラン共通</span><b>レシピ全44本・改訂と新レシピの自動配信・知見の還流・会員ラウンジ(Discord)。ツール導入は無制限</b></div>
     <div class="row"><span>お支払い</span><b>月初に請求書(PDF)をお送りし、当月末までに銀行振込。初回セットアップ会の月は無料で、翌月1日から課金</b></div>
     <div class="row"><span>プランの切替</span><b>前月末までの申告で翌月から。日割りなし</b></div>
     <div class="row"><span>別途実費</span><b>Claudeの有料プラン(個人向けProは月額US$22〜)。音声系レシピで使うAIサービスの利用料(使った分だけ)</b></div>
