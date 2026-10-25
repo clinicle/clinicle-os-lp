@@ -75,7 +75,7 @@ footer{padding:36px 0 0;color:var(--ink-soft);font-size:15px}
   <label class="f"><span class="t">住所<span class="req">必須</span></span><input type="text" name="住所" required placeholder="〒000-0000 北海道札幌市…" autocomplete="street-address"></label>
   <label class="f"><span class="t">電話<span class="req">必須</span></span><input type="tel" name="電話" required autocomplete="tel"></label>
   <label class="f"><span class="t">連絡用メールアドレス<span class="req">必須</span><small>請求書・ご案内の送り先</small></span><input type="email" name="メール" required autocomplete="email"></label>
-  <label class="f"><span class="t">ご担当者<small>事務長など。先生ご本人なら空欄のまま</small></span><input type="text" name="担当者" placeholder="お名前と、違う場合はメールアドレス"></label>
+  <label class="f"><span class="t">AI担当のスタッフ<small>院長先生と一緒にご参加いただく方。決まっていなければ空欄で</small></span><input type="text" name="AI担当スタッフ" placeholder="お名前とメールアドレス"></label>
 </fieldset>
 
 <fieldset>
@@ -149,7 +149,7 @@ function buildBody(v, today){
   L.push("住所: "+v["住所"]);
   L.push("電話: "+v["電話"]);
   L.push("メール: "+v["メール"]);
-  L.push("担当者: "+(v["担当者"]||"先生ご本人"));
+  L.push("AI担当スタッフ: "+(v["AI担当スタッフ"]||"未定"));
   L.push("");
   L.push("区分: "+v["区分"]);
   L.push("診療PC: "+v["診療PC"]);
