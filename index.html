@@ -38,7 +38,8 @@
    パソコン: 22px・スマホ: 19px(10/25 院長「20%程度小さく」で 27→22・23→19) */
 /* 語のまとまり(.nw)の中では改行しない。見出しは対応ブラウザで文節改行も */
 .nw{display:inline-block}
-h1,h2,h3,summary{word-break:auto-phrase}
+h1,h2,h3,summary,li,.price .row b,.stat span{word-break:auto-phrase}  /* 短い見出し・一覧・表は言葉の切れ目で改行(対応: Chrome・Edge)。長い本文は行の長さがばらつくので使わない */
+p{text-wrap:pretty}  /* 本文の最後の行が1〜2字だけになるのを避ける */
 /* 大きな数字は Inter(ゴシック系の欧文。和文の Zen Kaku Gothic New と相性がよい)。2026-10-25 院長「数字のフォント、とくにコンマが不自然」 */
 .num,.stat b,.plan .amt,.step::before,.cat h3 small{font-family:"Inter","Zen Kaku Gothic New",sans-serif;font-feature-settings:"tnum" 0}
 html{scroll-behavior:smooth;font-size:22px}
@@ -98,7 +99,7 @@ section.blk h2{font-size:clamp(27px,7.4vw,1.6rem);margin:10px 0 22px}
 /* catalog */
 .cats{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(13.889rem,100%),1fr));gap:14px;margin-top:6px}
 .cat{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:16px 18px}
-.cat h3{margin:0 0 6px;font-size:0.944rem;display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.cat h3{margin:0 0 6px;font-size:0.944rem;display:flex;justify-content:space-between;gap:4px 8px;align-items:baseline;flex-wrap:wrap}
 .cat h3 small{color:var(--accent-deep);font-size:0.833rem;white-space:nowrap}
 .cat ul{margin:0;padding-left:1.1em;font-size:0.889rem;color:var(--ink-soft);line-height:1.75}
 .cat li{margin:0}
@@ -154,9 +155,10 @@ details p{margin:8px 0 0;font-size:0.917rem;color:var(--ink-soft)}
 .contact h2{font-size:clamp(26px,7vw,1.556rem);margin:0 0 10px}
 .contact p{margin:0 0 20px;font-size:0.917rem;opacity:.92}
 .contact a.cta{background:#1b2a33;color:#f7faf9}
+.ctas2{display:flex;flex-wrap:wrap;justify-content:center;gap:12px}  /* 2つのボタンを並べ、狭い画面では間をあけて縦に */
 footer{padding:36px 0 56px;color:var(--ink-soft);font-size:0.833rem;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .small{font-size:0.806rem;color:var(--ink-soft)}
-@media (max-width:600px){.hero{padding:36px 0 52px}.rings{display:none}section.blk{padding:46px 0 4px}}
+@media (max-width:600px){.hero{padding:36px 0 52px}.rings{display:none}section.blk{padding:46px 0 4px}.origin{flex-direction:column;gap:10px;padding:20px}}
 /* print(2026-10-21): 紙・PDFで見るとき。カードの途中で切らない・よくある質問は答えまで出す */
 @media print{
   html{font-size:16px}
@@ -219,7 +221,7 @@ footer{padding:36px 0 56px;color:var(--ink-soft);font-size:0.833rem;display:flex
   <h2><span class="nw">ベンダー任せでは、</span><span class="nw">現場の「あと一歩」は</span><span class="nw">埋まらない</span></h2>
   <div class="two">
     <p>電子カルテもレセコンも入っている。それでも毎日、転記・手計算・二重チェック・声かけ確認が残ります。ベンダーに頼むほどではない、でも毎日数十分を奪う「あと一歩」。ここは既製品では埋まりません。医院ごとに形が違うからです。</p>
-    <p>生成AIの登場で、この「あと一歩」を<b>現場の自分たちで埋められる</b>時代になりました。私たちは一つの医院でそれを1年半実践し、音声カルテからレセプトチェックまで40本以上を自作しました。その全過程を、他の医院が再現できる形に整理したのがこのOSです。</p>
+    <p>生成AIの登場で、この「あと一歩」を<b>現場の自分たちで埋められる</b>時代になりました。私たちは一つの医院でそれを1年半実践し、音声カルテからレセプトチェックまで40本以上を自作しました。<span class="nw">その全過程を、</span>他の医院が再現できる形に整理したのがこのOSです。</p>
   </div>
 </section>
 
@@ -247,12 +249,12 @@ footer{padding:36px 0 56px;color:var(--ink-soft);font-size:0.833rem;display:flex
   <h2><span class="nw">6分野・44本のレシピ</span><span class="nw">(2026年10月現在)</span></h2>
   <p class="small">各レシピには「何ができるか・完成形・必要なもの・患者情報の扱い」が書いてあり、Pythonが要るかどうかも先に分かります。スプレッドシート系・カルテ画面系はPython不要です。</p>
   <div class="cats">
-    <div class="cat"><h3><span class="nw">診療</span><span class="nw">(記録づくり・</span><span class="nw">診察の補助)</span><small>11本</small></h3><ul><li>診察の音声からカルテ下書きを作る</li><li>看護師の問診・リハの所見を音声から記録</li><li>紹介状の下書き・お薬一覧・休薬チェック</li><li>小児の薬の量の自動計算</li></ul></div>
-    <div class="cat"><h3>カルテ画面の便利機能<small>13本</small></h3><ul><li>カルテ内のキーワード検索とハイライト</li><li>関節可動域の推移を一覧表示</li><li>リハの算定期限を自動計算</li><li>予約票をワンクリックで印刷</li></ul></div>
-    <div class="cat"><h3>医事・レセプト<small>7本</small></h3><ul><li>査定データの取り込みと再請求支援</li><li>レセプトの提出前チェック</li><li>リハ単位の突合(電カル×会計ソフト)</li><li>傷病手当金の書類をかんたん入力</li></ul></div>
-    <div class="cat"><h3>人事・総務・労務<small>5本</small></h3><ul><li>勤務表と勤怠の自動集計</li><li>有給申請をウェブ化する</li><li>担当表・シフト表をAIで作る</li><li>院内の物品発注(紙の発注書をなくす)</li></ul></div>
-    <div class="cat"><h3>院内の情報・その他<small>7本</small></h3><ul><li>最初に作る練習用の小さな道具</li><li>院内マニュアルをAIで作る</li><li>院内Q&amp;Aチャットボット</li><li>音声から議事録・記録を自動でつくる</li></ul></div>
-    <div class="cat"><h3><span class="nw">患者情報を守るしくみ</span><span class="nw">/読み物</span><small>1本+読み物</small></h3><ul><li>患者情報の匿名化(氏名を自動で伏せる)</li><li>AI音声カルテを育てた6段階の記録</li><li>AI利用規約ガイド・法令とガイドラインの線引き(同梱)</li></ul></div>
+    <div class="cat"><h3><span class="ttl"><span class="nw">診療</span><span class="nw">(記録づくり・</span><span class="nw">診察の補助)</span></span><small>11本</small></h3><ul><li><span class="nw">診察の音声から</span><span class="nw">カルテ下書きを作る</span></li><li><span class="nw">看護師の問診・</span><span class="nw">リハの所見を</span><span class="nw">音声から記録</span></li><li><span class="nw">紹介状の下書き・</span><span class="nw">お薬一覧・</span><span class="nw">休薬チェック</span></li><li><span class="nw">小児の薬の量の</span><span class="nw">自動計算</span></li></ul></div>
+    <div class="cat"><h3>カルテ画面の便利機能<small>13本</small></h3><ul><li><span class="nw">カルテ内の</span><span class="nw">キーワード検索と</span><span class="nw">ハイライト</span></li><li><span class="nw">関節可動域の推移を</span><span class="nw">一覧表示</span></li><li><span class="nw">リハの算定期限を</span><span class="nw">自動計算</span></li><li><span class="nw">予約票を</span><span class="nw">ワンクリックで印刷</span></li></ul></div>
+    <div class="cat"><h3>医事・レセプト<small>7本</small></h3><ul><li><span class="nw">査定データの取り込みと</span><span class="nw">再請求支援</span></li><li><span class="nw">レセプトの</span><span class="nw">提出前チェック</span></li><li><span class="nw">リハ単位の突合</span><span class="nw">(電カル×会計ソフト)</span></li><li><span class="nw">傷病手当金の書類を</span><span class="nw">かんたん入力</span></li></ul></div>
+    <div class="cat"><h3>人事・総務・労務<small>5本</small></h3><ul><li><span class="nw">勤務表と勤怠の</span><span class="nw">自動集計</span></li><li><span class="nw">有給申請を</span><span class="nw">ウェブ化する</span></li><li><span class="nw">担当表・シフト表を</span><span class="nw">AIで作る</span></li><li><span class="nw">院内の物品発注</span><span class="nw">(紙の発注書をなくす)</span></li></ul></div>
+    <div class="cat"><h3>院内の情報・その他<small>7本</small></h3><ul><li><span class="nw">最初に作る</span><span class="nw">練習用の小さな道具</span></li><li><span class="nw">院内マニュアルを</span><span class="nw">AIで作る</span></li><li><span class="nw">院内Q&amp;A</span><span class="nw">チャットボット</span></li><li><span class="nw">音声から</span><span class="nw">議事録・記録を</span><span class="nw">自動でつくる</span></li></ul></div>
+    <div class="cat"><h3><span class="ttl"><span class="nw">患者情報を守るしくみ</span><span class="nw">/読み物</span></span><small>1本+読み物</small></h3><ul><li><span class="nw">患者情報の匿名化</span><span class="nw">(氏名を自動で伏せる)</span></li><li><span class="nw">AI音声カルテを育てた</span><span class="nw">6段階の記録</span></li><li><span class="nw">AI利用規約ガイド・</span><span class="nw">法令とガイドラインの</span><span class="nw">線引き(同梱)</span></li></ul></div>
   </div>
 </section>
 
@@ -334,8 +336,8 @@ footer{padding:36px 0 56px;color:var(--ink-soft);font-size:0.833rem;display:flex
 <div class="contact" id="contact">
   <h2><span class="nw">まずは、</span><span class="nw">話だけでも。</span></h2>
   <p>2026年10月、正式に提供を始めました。貴院の環境に合うかどうかの見立てだけでも歓迎です。</p>
-  <a class="cta" href="mailto:info@clinicle.co.jp?subject=%E3%82%AF%E3%83%AA%E3%83%8B%E3%82%AF%E3%83%ABOS%E3%81%AE%E7%9B%B8%E8%AB%87">info@clinicle.co.jp に相談する</a>
-  <a class="cta ghost" href="申込.html" style="margin-left:10px;border-color:#1b2a33;color:#1b2a33">申込フォームへ</a>
+  <div class="ctas2"><a class="cta" href="mailto:info@clinicle.co.jp?subject=%E3%82%AF%E3%83%AA%E3%83%8B%E3%82%AF%E3%83%ABOS%E3%81%AE%E7%9B%B8%E8%AB%87"><span class="nw">info@clinicle.co.jp</span><span class="nw">&nbsp;に相談する</span></a>
+  <a class="cta ghost" href="申込.html" style="background:transparent;border-color:#1b2a33;color:#1b2a33">申込フォームへ</a></div>
 </div>
 
 <footer>
