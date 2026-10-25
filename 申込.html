@@ -96,7 +96,7 @@ footer{padding:36px 0 0;color:var(--ink-soft);font-size:15px}
     <div class="opts"><label><input type="radio" name="方針" value="決めている" required>決めている</label><label><input type="radio" name="方針" value="未定">未定</label></div>
     <div class="sub"><input type="text" name="方針の内容" placeholder="決めている場合は、その内容"></div></div>
   <label class="f" style="margin-top:14px"><span class="t">GitHub のユーザー名<small>あとからメールでも可</small></span><input type="text" name="GitHub" autocomplete="off" autocapitalize="off"></label>
-  <label class="f"><span class="t">初回セットアップ会の候補日時<small>オンライン30分・画面共有。3つほど</small></span><textarea name="候補日時" placeholder="例: 11/6(木) 13:00〜、11/7(金) 18:30〜、11/10(月) 12:30〜"></textarea></label>
+  <label class="f"><span class="t">初回セットアップ会の候補の時間帯<small>オンライン30分・画面共有。2〜3つ</small></span><textarea name="候補の時間帯" placeholder="例: 平日 20〜22時、土曜 10〜12時、日曜 14〜17時"></textarea></label>
 </fieldset>
 
 <fieldset>
@@ -158,7 +158,7 @@ function buildBody(v, today){
   L.push("Google: "+v["Google"]);
   L.push("AI方針: "+v["方針"]+(v["方針の内容"]?"("+v["方針の内容"]+")":""));
   L.push("GitHub: "+(v["GitHub"]||"あとで"));
-  L.push("候補日時: "+(v["候補日時"]||"あとで相談"));
+  L.push("候補の時間帯: "+(v["候補の時間帯"]||"あとで相談"));
   L.push("");
   L.push("料金とお支払い: 確認済み");
   L.push("確認事項: "+(v["確認"]||[]).length+"項目すべてに同意(利用規約・解約後の削除・ツールは当院の資産・患者情報を貼らない・出力は自分で検証・Claude等の利用料は別)");
