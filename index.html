@@ -136,9 +136,19 @@ ul.safe b{color:var(--accent-deep)}
 .common{background:var(--accent-soft);border-radius:12px;padding:18px 24px;margin:6px 0 22px}
 .common .ct{font-weight:700;color:var(--accent-deep);font-size:0.917rem;margin-bottom:6px}
 .common ul{margin:0;padding-left:1.2em;font-size:0.917rem;line-height:1.8}
-.flow{--g:16px;display:grid;grid-template-columns:minmax(0,1fr) 56px minmax(0,1fr);align-items:center}
-.flow .intro{align-self:center}
+.flow{--g:14px;display:grid;grid-template-columns:minmax(0,0.85fr) 56px minmax(0,1.15fr);grid-template-rows:auto 1fr}
+.flow .intro{grid-column:1;grid-row:2;align-self:stretch;display:flex;flex-direction:column;justify-content:center}  /* 左の1枠と右の2枠の高さを揃える */
+.flow .branch{grid-column:2;grid-row:2}
+.flow .chl{grid-column:3;grid-row:1;font-size:0.75rem;letter-spacing:.12em;color:var(--accent-deep);font-weight:700;margin:0 0 8px 4px}
+.flow .choices{grid-column:3;grid-row:2}
 .choices{display:grid;grid-auto-rows:1fr;gap:var(--g);align-self:stretch}
+.choices .plan{display:flex;flex-direction:column;justify-content:center;padding:14px 24px}
+.choices .plan h3{margin:0 0 2px}
+.choices .plan ul{margin-top:6px}
+.flow .plan .amt{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:12px}
+.flow .plan .amt small{margin:0}  /* 枠が広いので(税抜…)は「万円」の右に。狭い画面では自然に次の行へ */
+.plan li.disc{color:var(--ink)}
+.plan li.disc b{color:var(--accent-deep)}
 .branch{position:relative;align-self:stretch}
 .branch::before{content:"";position:absolute;left:0;width:50%;top:50%;border-top:3px solid var(--accent)}
 .branch::after{content:"";position:absolute;left:50%;right:0;top:calc((100% - var(--g))/4);bottom:calc((100% - var(--g))/4);border:3px solid var(--accent);border-right:0;border-radius:8px 0 0 8px}
@@ -146,6 +156,7 @@ ul.safe b{color:var(--accent-deep)}
   .flow{display:block}
   .branch{height:28px;margin-left:28px;border-left:3px solid var(--accent)}
   .branch::before,.branch::after{display:none}
+  .flow .chl{margin:0 0 0 28px;padding:2px 0 10px 18px;border-left:3px solid var(--accent)}
   .choices{margin-left:28px;padding-left:18px;border-left:3px solid var(--accent);grid-auto-rows:auto}
   .choices .plan{position:relative}
   .choices .plan::before{content:"";position:absolute;left:-21px;top:50%;width:19px;border-top:3px solid var(--accent)}
@@ -315,11 +326,12 @@ footer{padding:36px 0 56px;color:var(--ink-soft);font-size:0.833rem;display:flex
     </ul>
   </div>
   <div class="flow">
-    <div class="plan main intro"><span class="tag">最初の3か月</span><h3>導入期</h3><div class="amt">月額 3万円<sup>※</sup><small>(税抜・税込33,000円)</small></div><ul><li>月2回のオフィスアワー</li><li>個別支援(詰まったら駆け込める)</li><li>初回セットアップ会(30分)</li></ul></div>
+    <div class="plan main intro"><span class="tag">最初の3か月</span><h3>導入期</h3><div class="amt"><span class="v">月額 3万円<sup>※</sup></span><small>(税抜・税込33,000円)</small></div><ul><li>月2回のオフィスアワー</li><li>個別支援(詰まったら駆け込める)</li><li>初回セットアップ会(30分)</li></ul></div>
     <div class="branch" aria-hidden="true"></div>
+    <div class="chl">4か月目から、毎月どちらかを選ぶ</div>
     <div class="choices">
-      <div class="plan"><span class="tag">4か月目から・毎月選べる</span><h3>伴走プラン</h3><div class="amt">月額 3万円<sup>※</sup><small>(税抜・税込33,000円)</small></div><ul><li>月2回のオフィスアワー</li><li>個別支援・新しいツールの張り付き</li></ul></div>
-      <div class="plan"><span class="tag">4か月目から・毎月選べる</span><h3>セルフプラン</h3><div class="amt">月額 1万円<small>(税抜・税込11,000円)</small></div><ul><li>月1回のグループ会</li></ul></div>
+      <div class="plan"><h3>伴走プラン</h3><div class="amt"><span class="v">月額 3万円<sup>※</sup></span><small>(税抜・税込33,000円)</small></div><ul><li>月2回のオフィスアワー</li><li>個別支援(新しいツールは完成まで付き添い)</li></ul></div>
+      <div class="plan"><h3>セルフプラン</h3><div class="amt"><span class="v">月額 1万円</span><small>(税抜・税込11,000円)</small></div><ul><li class="disc">知見の還流が採用された翌月は<b>最大5,000円引き</b></li></ul></div>
     </div>
   </div>
   <p class="pnote">※ 月額3万円は無床診療所の料金です。有床診療所は月額5万円(税込55,000円)、病院は月額7万円(税込77,000円)。</p>
