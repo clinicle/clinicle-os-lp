@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>クリニクルOS かんたん適合チェック</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="10問に答えると、クリニクルOSの44本のレシピのうち、先生の医院で作れそうなものが分かります。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="クリニクルOS かんたん適合チェック｜10問で、先生の医院で作れそうなツールを確かめる">
+<meta property="og:description" content="10問に答えると、クリニクルOSの44本のレシピのうち、先生の医院で作れそうなものが分かります。答えはこのページの中だけで判定し、どこにも送りません。">
+<meta property="og:url" content="https://clinicle.github.io/clinicle-os-lp/check.html">
+<meta property="og:image" content="https://clinicle.github.io/clinicle-os-lp/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="クリニクル運営効率化OS">
+<meta property="og:locale" content="ja_JP">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap">
+<style>
+/* 左に問診票、右に「この医院でできそうなこと」一覧。答えるたびに右が並び替わる */
+/* 色と字は LP（clinicle-os-lp）に揃える: 緑と紺・ゴシック1種類・数字は Inter */
+:root{
+  --bg:#F7FAF9; --panel:#FFFFFF; --ink:#1B2A33; --sub:#4B5B63; --line:#D3E5DF;
+  --accent:#1C7C6D; --accent-soft:#E3F5EF;
+  --ok:#1C7C6D; --ok-soft:#E3F5EF; --cond:#A86412; --cond-soft:#FBEEDC; --ng:#6B7780; --ng-soft:#ECEFF0; --scene:#4B5B8A; --scene-soft:#E8EBF4;
+  --font-num:'Inter','Zen Kaku Gothic New',sans-serif;
+  --font-body:'Zen Kaku Gothic New','Hiragino Kaku Gothic ProN','Hiragino Sans','Yu Gothic','Meiryo',sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0F1A1A; --panel:#162321; --ink:#E3ECEA; --sub:#9FB3B0; --line:#24403A;
+  --accent:#5FD3B8; --accent-soft:#12302A;
+  --ok:#5FD3B8; --ok-soft:#12302A; --cond:#E8A95A; --cond-soft:#3A2C18; --ng:#98A1AB; --ng-soft:#232D30; --scene:#A9B4E0; --scene-soft:#232A40; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0F1A1A; --panel:#162321; --ink:#E3ECEA; --sub:#9FB3B0; --line:#24403A;
+  --accent:#5FD3B8; --accent-soft:#12302A;
+  --ok:#5FD3B8; --ok-soft:#12302A; --cond:#E8A95A; --cond-soft:#3A2C18; --ng:#98A1AB; --ng-soft:#232D30; --scene:#A9B4E0; --scene-soft:#232A40; color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:15px;line-height:1.7}
+.wrap{max-width:1180px;margin:0 auto;padding-block:32px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header{display:grid;gap:8px;margin-bottom:28px}
+.eyebrow{font-size:12px;letter-spacing:.12em;color:var(--accent);font-weight:700}
+h1{font-size:clamp(24px,4vw,34px);line-height:1.3;margin:0;text-wrap:balance;font-weight:700}
+.lead{color:var(--sub);margin:0;max-width:62ch}
+.grid{display:grid;grid-template-columns:minmax(0,400px) minmax(0,1fr);gap:28px;align-items:start}
+@media (max-width:860px){.grid{grid-template-columns:minmax(0,1fr)}}
+.form{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:20px;display:grid;gap:20px;position:sticky;top:calc(env(safe-area-inset-top,0px) + 12px);max-height:calc(100vh - 24px - env(safe-area-inset-top,0px));overflow-y:auto;overscroll-behavior:contain}
+@media (max-width:860px){.form{position:static;max-height:none;overflow:visible}}
+.disclaimer{font-size:13px;color:var(--cond);background:var(--cond-soft);border-radius:6px;padding:8px 12px;margin:4px 0 0;max-width:62ch}
+fieldset{border:0;margin:0;padding:0;display:grid;gap:8px;min-width:0}
+legend{font-weight:700;font-size:14px;padding:0;margin-bottom:6px}
+legend small{display:block;font-weight:400;color:var(--sub);font-size:12px}
+.opts{display:flex;flex-wrap:wrap;gap:6px}
+.opts label{position:relative}
+.opts input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.opts span{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-size:13px;color:var(--ink);background:var(--bg);cursor:pointer;transition:background .12s,border-color .12s}
+.opts input:checked + span{background:var(--accent);border-color:var(--accent);color:var(--panel);font-weight:500}
+.opts input:focus-visible + span{outline:2px solid var(--accent);outline-offset:2px}
+.example{font-size:12px;color:var(--sub);background:var(--accent-soft);border-radius:6px;padding:8px 10px;margin:0}
+.results{display:grid;gap:22px;min-width:0}
+.summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+@media (max-width:560px){.summary{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.sum{border-radius:10px;padding:14px 16px;display:grid;gap:2px}
+.sum b{font-family:var(--font-num);font-size:30px;line-height:1.1;font-variant-numeric:tabular-nums}
+.sum span{font-size:13px}
+.sum.ok{background:var(--ok-soft);color:var(--ok)} .sum.cond{background:var(--cond-soft);color:var(--cond)} .sum.scene{background:var(--scene-soft);color:var(--scene)} .sum.ng{background:var(--ng-soft);color:var(--ng)}
+@media (max-width:480px){.sum b{font-size:24px}.sum{padding:10px 12px}}
+.group h2{font-size:19px;margin:0 0 4px;display:flex;align-items:center;gap:10px;font-weight:700}
+.group > p{margin:0 0 12px;color:var(--sub);font-size:13px}
+.dot{width:10px;height:10px;border-radius:50%;flex:none}
+.g-ok .dot{background:var(--ok)} .g-cond .dot{background:var(--cond)} .g-scene .dot{background:var(--scene)} .g-ng .dot{background:var(--ng)}
+.list{display:grid;gap:8px}
+.item{background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--ok);border-radius:8px;padding:12px 14px;display:grid;gap:4px;min-width:0}
+.g-cond .item{border-left-color:var(--cond)} .g-scene .item{border-left-color:var(--scene)} .g-ng .item{border-left-color:var(--ng)}
+.item .top{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px}
+.num{font-family:var(--font-num);font-size:12px;color:var(--sub);font-variant-numeric:tabular-nums;min-width:2.6em}
+.name{font-weight:700}
+.tag{font-size:11px;border-radius:4px;padding:1px 7px;background:var(--accent-soft);color:var(--accent);font-weight:700}
+.desc{margin:0;font-size:13.5px;color:var(--sub)}
+.meta{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12px;color:var(--sub)}
+.why{margin:2px 0 0;padding:0;list-style:none;display:grid;gap:2px;font-size:13px}
+.why li.c::before{content:"条件　";color:var(--cond);font-weight:700}
+.why li.s::before{content:"場面　";color:var(--scene);font-weight:700}
+.why li.n::before{content:"理由　";color:var(--ng);font-weight:700}
+.why li.i::before{content:"メモ　";color:var(--accent);font-weight:700}
+details.group summary{cursor:pointer;list-style:none}
+details.group summary::-webkit-details-marker{display:none}
+details.group summary h2::after{content:"（開く）";font-size:13px;color:var(--sub);font-weight:400}
+details.group[open] summary h2::after{content:"（閉じる）"}
+.copy{display:flex;flex-wrap:wrap;gap:10px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.copy p{margin:0;font-size:13px;color:var(--sub);flex:1 1 260px}
+button{font:inherit;font-weight:700;font-size:14px;background:var(--accent);color:var(--panel);border:0;border-radius:8px;padding:9px 16px;cursor:pointer}
+button:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+textarea{width:100%;min-height:160px;font:12px/1.6 var(--font-body);color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:8px}
+.note{font-size:12px;color:var(--sub);border-top:1px solid var(--line);padding-top:14px;margin:0}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">クリニクルOS ／ かんたん適合チェック</div>
+    <h1>先生の医院で作れそうなツールを、10問で確かめます</h1>
+    <p class="lead">カルテの種類やパソコンの環境を選ぶと、クリニクルOSの44本のレシピを「すぐ始められる」「準備すればできる」「使う場面が少なそう」「今の環境では難しい」に分けて表示します。分からない質問は「わからない」を選んでください。</p>
+    <p class="disclaimer">※ あくまで自動の事前チェックです。実際に作れるかは、ご参加後に先生の医院の環境を確かめて決めます。ご不明な点は info@clinicle.co.jp までご連絡ください。</p>
+  </header>
+
+  <div class="grid">
+    <form class="form" id="f" autocomplete="off">
+      <p class="example" id="exnote">例として、整形外科・クラウド型カルテの医院の答えが入っています。先生の医院に合わせて選び直してください。</p>
+
+      <fieldset><legend>1. 診療科<small>複数選べます</small></legend>
+        <div class="opts" data-q="dept" data-multi>
+          <label><input type="checkbox" id="dept-ortho" value="ortho" checked><span>整形外科</span></label>
+          <label><input type="checkbox" id="dept-int" value="int"><span>内科</span></label>
+          <label><input type="checkbox" id="dept-ped" value="ped"><span>小児科</span></label>
+          <label><input type="checkbox" id="dept-other" value="other"><span>その他の科</span></label>
+        </div></fieldset>
+
+      <fieldset><legend>2. 電子カルテの種類</legend>
+        <div class="opts" data-q="karte">
+          <label><input type="radio" name="karte" id="karte-cloud" value="cloud" checked><span>ブラウザで開くクラウド型</span></label>
+          <label><input type="radio" name="karte" id="karte-onpb" value="onpb"><span>院内サーバー型（ChromeやEdgeで開く）</span></label>
+          <label><input type="radio" name="karte" id="karte-onp" value="onp"><span>院内サーバー型（専用ソフトで開く）</span></label>
+          <label><input type="radio" name="karte" id="karte-paper" value="paper"><span>紙カルテ</span></label>
+          <label><input type="radio" name="karte" id="karte-unk" value="unk"><span>わからない</span></label>
+        </div></fieldset>
+
+      <fieldset><legend>3. 会計ソフト（レセコン）<small>電子カルテと一体か、別のソフトか</small></legend>
+        <div class="opts" data-q="rece">
+          <label><input type="radio" name="rece" id="rece-sep" value="sep" checked><span>別のソフト</span></label>
+          <label><input type="radio" name="rece" id="rece-one" value="one"><span>一体型</span></label>
+          <label><input type="radio" name="rece" id="rece-unk" value="unk"><span>わからない</span></label>
+        </div></fieldset>
+
+      <fieldset><legend>4. ツールを作るパソコン</legend>
+        <div class="opts" data-q="pc">
+          <label><input type="radio" name="pc" id="pc-win" value="win" checked><span>Windows</span></label>
+          <label><input type="radio" name="pc" id="pc-mac" value="mac"><span>Mac</span></label>
+          <label><input type="radio" name="pc" id="pc-both" value="both"><span>両方ある</span></label>
+        </div></fieldset>
+
+      <fieldset><legend>5. Googleのアカウント<small>医院の仕事で使っているもの（スプレッドシート・ドライブ・フォームなど）</small></legend>
+        <div class="opts" data-q="google">
+          <label><input type="radio" name="google" id="google-ws" value="ws"><span>医院名義のGoogle Workspace（有料の契約）</span></label>
+          <label><input type="radio" name="google" id="google-free" value="free" checked><span>無料のGoogleアカウント</span></label>
+          <label><input type="radio" name="google" id="google-none" value="none"><span>使っていない</span></label>
+          <label><input type="radio" name="google" id="google-unk" value="unk"><span>わからない</span></label>
+        </div></fieldset>
+
+      <fieldset><legend>6. 患者の情報をAIに送ることについて<small>院内の方針に近いものを選んでください</small></legend>
+        <div class="opts" data-q="ai">
+          <label><input type="radio" name="ai" id="ai-no" value="no"><span>外部のAIには送らない</span></label>
+          <label><input type="radio" name="ai" id="ai-biz" value="biz"><span>医院名義で契約したAIサービスなら送ってよい</span></label>
+          <label><input type="radio" name="ai" id="ai-und" value="und" checked><span>まだ決めていない（レシピを選んでから一緒に決めます）</span></label>
+        </div></fieldset>
+
+      <fieldset><legend>7. リハビリの算定</legend>
+        <div class="opts" data-q="rehab">
+          <label><input type="radio" name="rehab" id="rehab-y" value="y" checked><span>している</span></label>
+          <label><input type="radio" name="rehab" id="rehab-n" value="n"><span>していない</span></label>
+        </div></fieldset>
+
+      <fieldset><legend>8. 手術（日帰りを含む）</legend>
+        <div class="opts" data-q="surg">
+          <label><input type="radio" name="surg" id="surg-y" value="y"><span>している</span></label>
+          <label><input type="radio" name="surg" id="surg-n" value="n" checked><span>していない</span></label>
+        </div></fieldset>
+
+      <fieldset><legend>9. 院内で使える iPhone・iPad</legend>
+        <div class="opts" data-q="ios">
+          <label><input type="radio" name="ios" id="ios-y" value="y"><span>ある</span></label>
+          <label><input type="radio" name="ios" id="ios-n" value="n" checked><span>ない</span></label>
+        </div></fieldset>
+
+      <fieldset><legend>10. 楽にしたい業務<small>複数選べます。一覧に印が付きます</small></legend>
+        <div class="opts" data-q="want" data-multi>
+          <label><input type="checkbox" id="want-rec" value="rec" checked><span>診察の記録</span></label>
+          <label><input type="checkbox" id="want-kar" value="kar"><span>カルテ画面の操作</span></label>
+          <label><input type="checkbox" id="want-ika" value="ika" checked><span>医事・レセプト</span></label>
+          <label><input type="checkbox" id="want-hr" value="hr"><span>勤怠・シフト・総務</span></label>
+          <label><input type="checkbox" id="want-info" value="info"><span>院内の情報・マニュアル</span></label>
+        </div></fieldset>
+    </form>
+
+    <section class="results" aria-live="polite">
+      <div class="summary" id="summary"></div>
+      <div id="groups"></div>
+      <div class="copy">
+        <p>この結果を文章でコピーして、お問い合わせ（info@clinicle.co.jp）に貼り付けていただくと、ご相談が早く進みます。</p>
+        <button type="button" id="copybtn">結果をコピー</button>
+        <textarea id="copytext" hidden readonly aria-label="コピー用の結果"></textarea>
+      </div>
+      <p class="note">※ あくまで自動の事前チェックです。選んでいただいた答えだけで機械的に出した目安で、カルテの画面の作りや院内のネットワークによって変わることがあります。正式には、ご参加後のヒアリングで先生の医院に合わせて決めます。ご不明な点は info@clinicle.co.jp までご連絡ください。患者の情報は、このページには入力しないでください。答えはこのページの中だけで判定し、どこにも送りません。</p>
+      <p class="note"><a href="./" style="color:var(--accent)">クリニクル運営効率化OS のご案内に戻る</a></p>
+    </section>
+  </div>
+</div>
+
+<script>
+// 一覧の分類名はカタログ（catalog.yaml の カテゴリ）に合わせる。問10の選択肢は短い言い方のまま
+const CAT={rec:'診療（記録づくり・診察の補助）',kar:'カルテ画面の便利機能',ika:'医事・レセプト',hr:'人事・総務・労務',info:'院内の情報・その他',safe:'患者情報を守るしくみ'};
+// t: tm=カルテ画面拡張 / win=Windows専用 / gas=Googleスプレッドシート / gasws=患者情報を扱うGoogle / ext=患者情報を院外AIへ / extc=作り方次第でAIへ / gpu / sep / romdep / server / link=連携先アプリ / onpnote=院内サーバー型でも使える
+// 場面（技術の前提ではなく、使う場面があるか）: rehab / surg / ped / ortho / toban
+const R=[
+ ['R1','診察の音声からカルテ下書きを作る','rec',3,'週単位','診察の会話を録音し、文字起こしからSOAP形式の下書きを作ってカルテに貼れる状態にします',['ext','paperok']],
+ ['R2','音声から記録を作るアプリ（iPhone・iPad）','rec',3,'週単位','手元の端末で録音し、要約をカルテ端末へ送ります。診察・問診・リハ・会議など用途を切り替えて使えます',['ios','extc','onpnote']],
+ ['R3','看護師の問診を音声から要約する','rec',3,'週単位','問診の会話を録音し、診察の前に問診の要約をカルテへ貼れるようにします',['ext']],
+ ['R4','リハビリの所見を音声から記録する','rec',3,'週単位','施術中に話した内容を部位ごとの所見にまとめ、カルテに貼り付けます',['ext','rehab']],
+ ['R5','手術記録の下書きを音声から作る','rec',2,'1〜2日','手術中の会話から記録の下書きを作り、記録作成を確認作業にします',['ext','surg']],
+ ['R6','GPU搭載PCで動く音声入力（外部送信なし）','rec',2,'半日','院外に何も送らずに文字起こしだけを行います',['gpu']],
+ ['R7','紹介状の下書きを作る','rec',1,'30分〜','カルテの記載から診療情報提供書の本文を下書きします。医師は確認と手直しだけ',['ext']],
+ ['R8','お薬一覧を自動で作る','rec',1,'1〜2時間','服薬内容の転記をなくし、カルテやExcelにすぐ貼れる形にします',['extc']],
+ ['R9','手術前の休薬チェック','rec',2,'30分〜半日','止めるべき薬の確認漏れを防ぎ、休止薬の照合をほぼ自動にします',['extc']],
+ ['R10','小児の薬の量を自動計算','rec',1,'1時間〜','体重を入れると1回量を計算し、上限を超えたら警告します',['gas','ped']],
+ ['R11','リハビリのウェブ問診と点数集計','rec',2,'2〜3日','紙の問診票をやめ、回答とスコア計算を自動にします',['gasws','rehab']],
+ ['R12','カルテ画面に機能を足す準備','kar',2,'30分＋調査1〜2時間','カルテ画面に機能を足すための土台です。以降の機能はここに積み上げます。最初にカルテの会社の利用規約を確かめます',['tm']],
+ ['R13','カルテ内のキーワード検索とハイライト','kar',2,'半日','探している記載へ移動して色を付けます',['tm','pre12']],
+ ['R14','カルテメモを色分け・太字にする','kar',2,'半日','色が使えないメモ欄に装飾を足し、重要事項の見落としを防ぎます',['pre12','tm']],
+ ['R15','履歴画面から前回の診察をすぐ開く','kar',2,'半日〜1日','過去カルテから直近の診察を自動で探して表示します',['pre12','tm']],
+ ['R16','関節可動域（ROM）の推移を一覧表示','kar',2,'半日〜1日','過去のROMを自動で拾って時系列で見せます',['pre12','tm','ortho','romdep']],
+ ['R17','骨粗鬆症の検査・注射・薬をまとめて確認','kar',3,'数日','関連する記載を集めて、その日の入力を助けます',['pre12','tm','ortho']],
+ ['R18','リハビリの算定期限を自動計算してメモに出す','kar',2,'半日〜1日','起算日から150日期限などを計算し、カルテのメモに記載できます',['pre12','tm','rehab']],
+ ['R19','会計時にリハの算定内容をチェックする','kar',3,'数日','起算日からの日数や評価料・加算の算定状況を会計時に確かめます',['pre12','tm','rehab']],
+ ['R20','予約時刻を過ぎた未受付の患者を検出','kar',3,'半日〜1日','予約一覧から来ていない患者を見つけ、受付の端末で共有します',['pre12','tm','server']],
+ ['R21','カルテの患者IDをアプリへ自動で渡す','kar',3,'半日〜1日','カルテ画面のボタンで患者IDを音声カルテなどへ渡し、選び直しと取り違えをなくします',['pre12','tm','link','onpchk']],
+ ['R22','予約票をワンクリックで印刷','kar',3,'1〜2日','ダウンロード→開く→印刷の3手を1クリックにします',['pre12','tm','win']],
+ ['R23','未来日の予約票をまとめて印刷','kar',3,'1〜2日','先の日付の予約票を、日付ごとにまとめて印刷します',['pre12','tm','win']],
+ ['R24','過去1年の経過を3行にまとめる','kar',3,'1〜2日','過去1年分の記載から経過のまとめを作り、履歴確認を短くします',['pre12','tm','ext']],
+ ['R25','査定データの取り込みと再請求支援','ika',3,'1〜2日','増減点連絡のCSVを台帳へ自動で取り込み、重複や転記ミスをなくします',[]],
+ ['R26','レセプトの提出前チェック','ika',3,'週単位','提出前の自主点検で、査定・返戻を未然に防ぎます',[]],
+ ['R27','電子カルテと会計ソフトのリハ単位突合','ika',2,'半日〜1日','両方の単位数を患者ごとに突き合わせ、不一致を一度に抜き出します',['gasws','rehab','sep']],
+ ['R28','カルテ記載と実施データのリハ単位突合','ika',2,'半日〜1日','カルテに書いた単位と実施データを照合し、記載漏れを見つけます',['rehab']],
+ ['R29','スプレッドシートの繰り返し作業を自動化','ika',2,'半日','毎月手作業の割り振りや集計を、ボタン1つか半自動にします',['gasws']],
+ ['R30','傷病手当金の書類をかんたん入力','ika',2,'半日〜1日','書きにくい公式PDFへの記入を、入力フォームに置き換えます',[]],
+ ['R31','当番医の報告書を自動作成','ika',1,'数時間','当番日の受診データから市町村別・年齢区分別に集計し、報告書を作ります',['toban']],
+ ['R32','勤務表と勤怠の自動集計','hr',3,'週単位','残業の計算や給与前の突き合わせをなくします',['gas']],
+ ['R33','有給申請をウェブ化する','hr',2,'1〜2日','紙の申請をやめ、申請漏れ・承認漏れを自動で見つけます',['gas']],
+ ['R34','担当表・シフト表をAIで作る','hr',1,'30分〜半日','外来担当や当番の割り当てを、医院の決まりから掲示用の表にします',['gas']],
+ ['R35','名刺を読み取って管理する','hr',2,'半日〜1日','名刺のPDFから氏名・社名・連絡先を抜き出して貯めます',[]],
+ ['R36','院内の物品発注（紙の発注書をなくす）','hr',3,'週単位','画面で数量を入力→確認→業者へメール、の流れで発注漏れと転記ミスを防ぎます',['gas']],
+ ['R37','音声から議事録・記録を自動でつくる','info',3,'週単位','話した内容を要約し、議事録や各種記録の書式で書き出します',['extc']],
+ ['R38','最初に作る練習用の小さな道具','info',1,'数分〜1時間','数分でできる道具を作り、AIと一緒に作る感覚をつかみます',[]],
+ ['R39','院内ツールの入口ページ','info',1,'1〜2時間','院内の全ツールへのリンク集を作り、「あのシートどこ？」をなくします',['gas']],
+ ['R40','院内マニュアルをAIで作る','info',1,'30分〜1時間','規程や手順書を、現場向けの読みやすいマニュアルに作り替えます',[]],
+ ['R41','院内Q&Aチャットボット','info',1,'30分〜1時間','就業規則や算定の質問に、スタッフが自分で答えを見つけられるようにします。Google Workspace の Gemini がおすすめです',[]],
+ ['R42','PDFに文字を書き込む','info',1,'15〜30分','手書きのメモとスキャンし直しの手間をなくします',[]],
+ ['R43','ブラウザで使える動画編集','info',2,'半日','インストール不要で、院内研修や患者説明の動画を作れます',[]],
+ ['R44','患者情報の匿名化（氏名を自動で伏せる）','safe',2,'1日','ファイルや文章の氏名・IDを自動で置き換えてからAIに渡します',[]],
+];
+
+function answers(){
+  const a={};
+  document.querySelectorAll('.opts').forEach(g=>{
+    const q=g.dataset.q;
+    if(g.hasAttribute('data-multi')) a[q]=[...g.querySelectorAll('input:checked')].map(i=>i.value);
+    else {const c=g.querySelector('input:checked'); a[q]=c?c.value:null;}
+  });
+  return a;
+}
+
+// 段の決め方: 技術的に無理（ng）> 使う場面が少なそう（scene）> 準備すればできる（cond）> すぐ（ok）
+// 条件はカタログの前提・必要な技術・患者情報の欄と SKILL.md に書いてあるものだけ
+function judge(tags,a){
+  const ng=[],cond=[],scene=[],info=[];
+  const has=t=>tags.includes(t);
+  if(has('tm')){
+    if(a.karte==='onp') ng.push('カルテをChromeやEdgeなどのブラウザで開く医院向けの機能です（ブラウザで開くカルテに移ると使えます）');
+    else if(a.karte==='paper') ng.push('電子カルテの画面に足す機能です');
+    else if(a.karte==='unk') cond.push('カルテがブラウザ（ChromeやEdge）で開く型かを確かめます');
+  }
+  if(has('onpchk') && a.karte==='onpb') cond.push('院内サーバー型のカルテで動くかは、画面を見て確かめます');
+  if(has('link')) cond.push('患者IDを渡す先のアプリ（音声カルテなど）を先に作ります');
+  if(has('onpnote') && (a.karte==='onp'||a.karte==='onpb')) info.push('院内サーバー型のカルテでも使えます');
+  if(has('win') && a.pc==='mac') ng.push('Windowsの印刷の仕組みを使うため、Windowsのパソコンが要ります');
+  if(has('ios') && a.ios==='n') ng.push('院内で使える iPhone・iPad が要ります');
+  if(has('gpu')){
+    if(a.pc==='mac') ng.push('NVIDIA製のGPUを積んだWindowsのパソコンが要ります（Macでは動きません）');
+    else cond.push('NVIDIA製のGPUを積んだパソコンが要ります');
+  }
+  if(has('sep')){
+    if(a.rece==='one') ng.push('電子カルテと会計ソフトが別々の医院向けです（一体型では不要）');
+    else if(a.rece==='unk') cond.push('電子カルテと会計ソフトが別のソフトかを確かめます');
+  }
+  if(has('gas') && (a.google==='none'||a.google==='unk')) cond.push('医院名義で無料のGoogleアカウントを作れば始められます');
+  if(has('gasws') && a.google!=='ws') cond.push('患者の情報を扱う本番では、医院名義のGoogle Workspaceが要ります（架空のデータでの試作は無料のアカウントで可）');
+  if(has('ext') && a.ai!=='biz') cond.push('患者の情報を、医院名義で契約したAIサービスに送ることを院内で決めれば始められます');
+  if(has('extc') && a.ai!=='biz') cond.push('AIに患者の情報を送らない作り方を選べば始められます');
+  if(has('paperok') && a.karte==='paper') cond.push('紙カルテでは、下書きを印刷するか書き写して使います');
+  if(has('romdep')) cond.push('音声カルテ（R1）でROMの記載を貯めていることが前提です');
+  if(has('server')) cond.push('受付の端末どうしで共有するため、まとめ役のパソコンが1台要ります');
+  // 場面: 技術の前提ではないので「難しい」には入れない
+  if(has('rehab') && a.rehab==='n') scene.push('リハビリを算定している医院で使う道具です');
+  if(has('surg') && a.surg==='n') scene.push('手術をしている医院で使う道具です');
+  if(has('ped') && !a.dept.includes('ped')) scene.push('子どもに薬を処方する場面で使う道具です');
+  if(has('ortho') && !a.dept.includes('ortho')) scene.push('整形外科でよく使う道具です');
+  // 当番医は問いが無いので段を動かさず、メモとして出す
+  if(has('toban')) info.push('休日当番医を担当している医院で使う道具です');
+  const s=ng.length?'ng':(scene.length?'scene':(cond.length?'cond':'ok'));
+  const why=s==='ng'?ng.map(t=>['n',t]):[...scene.map(t=>['s',t]),...cond.map(t=>['c',t]),...info.map(t=>['i',t])];
+  return {s, why};
+}
+
+const GROUPS=[
+  ['ok','すぐ始められる','いまの環境のまま始められます。'],
+  ['cond','準備・確認をすれば始められる','条件を満たせば始められます。条件は各レシピの下に書いています。'],
+  ['scene','使う場面が少なそう','環境としては作れますが、答えから見て使う場面が少なそうなものです。'],
+  ['ng','いまの環境では難しい','答えから見て、今の環境では作れないものです。理由と、どうすれば作れるかを書いています。'],
+];
+const stars=n=>'★'.repeat(n)+'☆'.repeat(3-n);
+const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const MARK={n:'理由',s:'場面',c:'条件',i:'メモ'};
+
+function render(){
+  const a=answers();
+  const rows=R.map(([n,name,cat,lv,time,desc,tags])=>({n,name,cat,lv,time,desc,...judge(tags,a),pre:tags.includes('pre12'),want:a.want.includes(cat)}));
+  const cnt={ok:0,cond:0,scene:0,ng:0}; rows.forEach(r=>cnt[r.s]++);
+  document.getElementById('summary').innerHTML=GROUPS.map(([k,t])=>`<div class="sum ${k}"><b>${cnt[k]}</b><span>${t}</span></div>`).join('');
+  const sortFn=(x,y)=>parseInt(x.n.slice(1))-parseInt(y.n.slice(1));
+  const html=GROUPS.map(([k,t,p])=>{
+    const list=rows.filter(r=>r.s===k).sort(sortFn);
+    if(!list.length) return '';
+    const items=list.map(r=>`<article class="item">
+      <div class="top"><span class="num">${r.n}</span><span class="name">${esc(r.name)}</span>${r.want?'<span class="tag">楽にしたい業務</span>':''}</div>
+      <p class="desc">${esc(r.desc)}</p>
+      <div class="meta"><span>${CAT[r.cat]}</span>${r.pre?'<span>先にR12を作ります</span>':''}<span>難しさ ${stars(r.lv)}</span><span>目安 ${esc(r.time)}</span></div>
+      ${r.why.length?`<ul class="why">${r.why.map(([c,w])=>`<li class="${c}">${esc(w)}</li>`).join('')}</ul>`:''}
+    </article>`).join('');
+    const head=`<h2><span class="dot"></span>${t}（${list.length}本）</h2>`;
+    return (k==='ng'||k==='scene')
+      ? `<details class="group g-${k}"><summary>${head}</summary><p>${p}</p><div class="list">${items}</div></details>`
+      : `<div class="group g-${k}">${head}<p>${p}</p><div class="list">${items}</div></div>`;
+  }).join('');
+  document.getElementById('groups').innerHTML=html;
+
+  const label=q=>{const g=document.querySelector(`.opts[data-q="${q}"]`);return [...g.querySelectorAll('input:checked')].map(i=>i.nextElementSibling.textContent).join('、')||'未選択';};
+  const qs=[['dept','診療科'],['karte','電子カルテ'],['rece','会計ソフト'],['pc','パソコン'],['google','Google'],['ai','患者情報とAI'],['rehab','リハビリ'],['surg','手術'],['ios','iPhone・iPad'],['want','楽にしたい業務']];
+  let txt='【クリニクルOS かんたん適合チェックの結果】\n';
+  txt+=qs.map(([q,l])=>`${l}：${label(q)}`).join('\n')+'\n\n';
+  GROUPS.forEach(([k,t])=>{
+    const list=rows.filter(r=>r.s===k).sort(sortFn);
+    txt+=`■ ${t}（${list.length}本）\n`+list.map(r=>`${r.n} ${r.name}${r.why.length?' — '+r.why.map(([c,w])=>MARK[c]+'：'+w).join('／'):''}`).join('\n')+'\n\n';
+  });
+  document.getElementById('copytext').value=txt.trim();
+}
+
+let touched=false;
+document.getElementById('f').addEventListener('change',()=>{
+  if(!touched){touched=true;document.getElementById('exnote').hidden=true;}
+  render();
+});
+document.getElementById('copybtn').addEventListener('click',()=>{
+  const ta=document.getElementById('copytext'),b=document.getElementById('copybtn');
+  const done=()=>{b.textContent='コピーしました';setTimeout(()=>b.textContent='結果をコピー',2000);};
+  const fallback=()=>{ta.hidden=false;ta.focus();ta.select();b.textContent='下の文章を選んでコピーしてください';};
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(ta.value).then(done,fallback);}else fallback();
+});
+render();
+</script>
