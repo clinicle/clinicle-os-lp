@@ -123,6 +123,13 @@ textarea{width:100%;min-height:160px;font:12px/1.6 var(--font-body);color:var(--
           <label><input type="radio" name="karte" id="karte-unk" value="unk"><span>わからない</span></label>
         </div></fieldset>
 
+      <fieldset id="netq" hidden><legend>2-2. カルテを開く端末のインターネット<small>院内サーバー型を選んだときだけの問いです</small></legend>
+        <div class="opts" data-q="net">
+          <label><input type="radio" name="net" id="net-on" value="on" checked><span>つながる</span></label>
+          <label><input type="radio" name="net" id="net-off" value="off"><span>つながらない（院内だけのネットワーク）</span></label>
+          <label><input type="radio" name="net" id="net-unk" value="unk"><span>わからない</span></label>
+        </div></fieldset>
+
       <fieldset><legend>3. 会計ソフト（レセコン）<small>電子カルテと一体か、別のソフトか</small></legend>
         <div class="opts" data-q="rece">
           <label><input type="radio" name="rece" id="rece-sep" value="sep" checked><span>別のソフト</span></label>
@@ -182,6 +189,7 @@ textarea{width:100%;min-height:160px;font:12px/1.6 var(--font-body);color:var(--
 
     <section class="results" aria-live="polite">
       <div class="summary" id="summary"></div>
+      <p class="example" id="netnote" hidden>カルテを開く端末がインターネットにつながらないので、ツールを作るパソコン（AIを使う）は、ネットにつながる別の1台を用意します。</p>
       <div id="groups"></div>
       <div class="copy">
         <p>この結果を文章でコピーして、お問い合わせ（info@clinicle.co.jp）に貼り付けていただくと、ご相談が早く進みます。</p>
@@ -198,6 +206,7 @@ textarea{width:100%;min-height:160px;font:12px/1.6 var(--font-body);color:var(--
 // 一覧の分類名はカタログ（catalog.yaml の カテゴリ）に合わせる。問10の選択肢は短い言い方のまま
 const CAT={rec:'診療（記録づくり・診察の補助）',kar:'カルテ画面の便利機能',ika:'医事・レセプト',hr:'人事・総務・労務',info:'院内の情報・その他',safe:'患者情報を守るしくみ'};
 // t: tm=カルテ画面拡張 / win=Windows専用 / gas=Googleスプレッドシート / gasws=患者情報を扱うGoogle / ext=患者情報を院外AIへ / extc=作り方次第でAIへ / gpu / sep / romdep / server / link=連携先アプリ / onpnote=院内サーバー型でも使える
+// csvin=電子カルテのCSVを取り込む。カルテ端末のネット接続（問2-2）の扱いは catalog.yaml の「カルテ端末のネット」欄（v0.19.0 で追加。案は 設計/カルテ端末のネット接続_20261028.md）
 // 場面（技術の前提ではなく、使う場面があるか）: rehab / surg / ped / ortho / toban
 const R=[
  ['R1','診察の音声からカルテ下書きを作る','rec',3,'週単位','診察の会話を録音し、文字起こしからSOAP形式の下書きを作ってカルテに貼れる状態にします',['ext','paperok']],
@@ -226,7 +235,7 @@ const R=[
  ['R24','過去1年の経過を3行にまとめる','kar',3,'1〜2日','過去1年分の記載から経過のまとめを作り、履歴確認を短くします',['pre12','tm','ext']],
  ['R25','査定データの取り込みと再請求支援','ika',3,'1〜2日','増減点連絡のCSVを台帳へ自動で取り込み、重複や転記ミスをなくします',[]],
  ['R26','レセプトの提出前チェック','ika',3,'週単位','提出前の自主点検で、査定・返戻を未然に防ぎます',[]],
- ['R27','電子カルテと会計ソフトのリハ単位突合','ika',2,'半日〜1日','両方の単位数を患者ごとに突き合わせ、不一致を一度に抜き出します',['gasws','rehab','sep']],
+ ['R27','電子カルテと会計ソフトのリハ単位突合','ika',2,'半日〜1日','両方の単位数を患者ごとに突き合わせ、不一致を一度に抜き出します',['gasws','rehab','sep','csvin']],
  ['R28','カルテ記載と実施データのリハ単位突合','ika',2,'半日〜1日','カルテに書いた単位と実施データを照合し、記載漏れを見つけます',['rehab']],
  ['R29','スプレッドシートの繰り返し作業を自動化','ika',2,'半日','毎月手作業の割り振りや集計を、ボタン1つか半自動にします',['gasws']],
  ['R30','傷病手当金の書類をかんたん入力','ika',2,'半日〜1日','書きにくい公式PDFへの記入を、入力フォームに置き換えます',[]],
@@ -283,6 +292,19 @@ function judge(tags,a){
   if(has('gasws') && a.google!=='ws') cond.push('患者の情報を扱う本番では、医院名義のGoogle Workspaceが要ります（架空のデータでの試作は無料のアカウントで可）');
   if(has('ext') && a.ai!=='biz') cond.push('患者の情報を、医院名義で契約したAIサービスに送ることを院内で決めれば始められます');
   if(has('extc') && a.ai!=='biz') cond.push('AIに患者の情報を送らない作り方を選べば始められます');
+  // カルテ端末のネット接続（問2-2。院内サーバー型のときだけ聞く）。つながらなくても「難しい」にはせず、条件として出す
+  const onprem=a.karte==='onp'||a.karte==='onpb';
+  const off=onprem&&a.net==='off', nunk=onprem&&a.net==='unk';
+  if(off){
+    if(has('tm')&&has('ext')) cond.push('カルテ画面の記載をAIへ送るため、ネットにつながる中継のパソコンを院内に置けるかを確かめます');
+    else if(has('tm')&&a.karte==='onpb') cond.push('カルテ端末がネットにつながらないので、拡張機能はUSBなどで持ち込んで入れます。カルテの会社の許可を先に確かめます');
+    if(has('ext')&&!has('tm')) cond.push('AIはネットにつながる別のパソコンで使い、できた下書きはQRコードなどでカルテ端末へ移します');
+    if(has('extc')&&!has('ios')) info.push('AIを使わない作り方なら、ネットにつながらないカルテ端末でも使えます');
+    if(has('ios')) info.push('カルテ端末へはBluetoothかQRコードで送るので、ネットにつながらないカルテ端末でも使えます');
+    if(has('csvin')) cond.push('電子カルテのCSVを、USBなどでネットにつながるパソコンへ移して使います');
+    else if(has('gas')||has('gasws')) info.push('カルテ端末ではなく、ネットにつながる事務のパソコンやスマホで使います');
+  }
+  if(nunk && (has('tm')||has('ext'))) cond.push('カルテを開く端末がインターネットにつながるかを確かめます');
   if(has('paperok') && a.karte==='paper') cond.push('紙カルテでは、下書きを印刷するか書き写して使います');
   if(has('romdep')) cond.push('音声カルテ（R1）でROMの記載を貯めていることが前提です');
   if(has('server')) cond.push('受付の端末どうしで共有するため、まとめ役のパソコンが1台要ります');
@@ -331,7 +353,10 @@ function render(){
   document.getElementById('groups').innerHTML=html;
 
   const label=q=>{const g=document.querySelector(`.opts[data-q="${q}"]`);return [...g.querySelectorAll('input:checked')].map(i=>i.nextElementSibling.textContent).join('、')||'未選択';};
-  const qs=[['dept','診療科'],['karte','電子カルテ'],['rece','会計ソフト'],['pc','パソコン'],['google','Google'],['ai','患者情報とAI'],['rehab','リハビリ'],['surg','手術'],['ios','iPhone・iPad'],['want','楽にしたい業務']];
+  const onprem=a.karte==='onp'||a.karte==='onpb';
+  document.getElementById('netq').hidden=!onprem;
+  document.getElementById('netnote').hidden=!(onprem&&a.net==='off');
+  const qs=[['dept','診療科'],['karte','電子カルテ'],...(onprem?[['net','カルテ端末のネット']]:[]),['rece','会計ソフト'],['pc','パソコン'],['google','Google'],['ai','患者情報とAI'],['rehab','リハビリ'],['surg','手術'],['ios','iPhone・iPad'],['want','楽にしたい業務']];
   let txt='【クリニクルOS かんたん適合チェックの結果】\n';
   txt+=qs.map(([q,l])=>`${l}：${label(q)}`).join('\n')+'\n\n';
   GROUPS.forEach(([k,t])=>{
