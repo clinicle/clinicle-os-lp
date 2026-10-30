@@ -87,6 +87,8 @@ footer{padding:36px 0 0;color:var(--ink-soft);font-size:15px}
     <div class="opts"><label><input type="radio" name="診療PC" value="Windows" required>Windows</label><label><input type="radio" name="診療PC" value="Mac">Mac</label><label><input type="radio" name="診療PC" value="両方">両方</label></div></div>
   <div class="f" style="margin-top:14px"><span style="display:block;font-weight:700;font-size:16.5px">診療以外の業務に使うパソコン<span class="req">必須</span><small style="font-weight:400;color:var(--ink-soft);margin-left:6px">院長・職員の書類作り・事務など</small></span>
     <div class="opts"><label><input type="radio" name="業務PC" value="Windows" required>Windows</label><label><input type="radio" name="業務PC" value="Mac">Mac</label><label><input type="radio" name="業務PC" value="両方">両方</label></div></div>
+  <div class="f" style="margin-top:14px"><span style="display:block;font-weight:700;font-size:16.5px">セットアップ会で使う開発用のパソコン<span class="req">必須</span><small style="font-weight:400;color:var(--ink-soft);margin-left:6px">Claude Code を入れる1台。当日の手順が Windows と Mac で違います</small></span>
+    <div class="opts"><label><input type="radio" name="開発PC" value="Windows" required>Windows</label><label><input type="radio" name="開発PC" value="Mac">Mac</label><label><input type="radio" name="開発PC" value="まだ決めていない">まだ決めていない</label></div></div>
   <div class="f" style="margin-top:14px"><span style="display:block;font-weight:700;font-size:16.5px">電子カルテ<span class="req">必須</span></span>
     <div class="opts"><label><input type="radio" name="カルテ" value="クラウド型" required>クラウド型</label><label><input type="radio" name="カルテ" value="オンプレ型">オンプレ型</label><label><input type="radio" name="カルテ" value="その他">その他</label></div>
     <div class="sub"><input type="text" name="カルテ名" placeholder="カルテの名称(分かれば)。その他の場合はその内容"></div></div>
@@ -156,6 +158,7 @@ function buildBody(v, today){
   L.push("区分: "+v["区分"]);
   L.push("診療PC: "+v["診療PC"]);
   L.push("業務PC: "+v["業務PC"]);
+  L.push("開発用PC: "+v["開発PC"]);
   L.push("カルテ: "+v["カルテ"]+(v["カルテ名"]?"("+v["カルテ名"]+")":""));
   L.push("Google: "+v["Google"]);
   L.push("AI方針: "+v["方針"]+(v["方針の内容"]?"("+v["方針の内容"]+")":""));
