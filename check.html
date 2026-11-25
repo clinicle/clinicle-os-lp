@@ -2,10 +2,10 @@
 <html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>クリニクルOS かんたん適合チェック</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<meta name="description" content="10問に答えると、クリニクルOSの44本のレシピのうち、先生の医院で作れそうなものが分かります。">
+<meta name="description" content="10問に答えると、クリニクルOSの45本のレシピのうち、先生の医院で作れそうなものが分かります。">
 <meta property="og:type" content="website">
 <meta property="og:title" content="クリニクルOS かんたん適合チェック｜10問で、先生の医院で作れそうなツールを確かめる">
-<meta property="og:description" content="10問に答えると、クリニクルOSの44本のレシピのうち、先生の医院で作れそうなものが分かります。答えはこのページの中だけで判定し、どこにも送りません。">
+<meta property="og:description" content="10問に答えると、クリニクルOSの45本のレシピのうち、先生の医院で作れそうなものが分かります。答えはこのページの中だけで判定し、どこにも送りません。">
 <meta property="og:url" content="https://clinicle.github.io/clinicle-os-lp/check.html">
 <meta property="og:image" content="https://clinicle.github.io/clinicle-os-lp/og.png">
 <meta property="og:image:width" content="1200">
@@ -98,7 +98,7 @@ textarea{width:100%;min-height:160px;font:12px/1.6 var(--font-body);color:var(--
   <header>
     <div class="eyebrow">クリニクルOS ／ かんたん適合チェック</div>
     <h1>先生の医院で作れそうなツールを、10問で確かめます</h1>
-    <p class="lead">カルテの種類やパソコンの環境を選ぶと、クリニクルOSの44本のレシピを「すぐ始められる」「準備すればできる」「使う場面が少なそう」「今の環境では難しい」に分けて表示します。分からない質問は「わからない」を選んでください。</p>
+    <p class="lead">カルテの種類やパソコンの環境を選ぶと、クリニクルOSの45本のレシピを「すぐ始められる」「準備すればできる」「使う場面が少なそう」「今の環境では難しい」に分けて表示します。分からない質問は「わからない」を選んでください。</p>
     <p class="disclaimer">※ あくまで自動の事前チェックです。実際に作れるかは、ご参加後に先生の医院の環境を確かめて決めます。ご不明な点は info@clinicle.co.jp までご連絡ください。</p>
   </header>
 
@@ -207,6 +207,7 @@ textarea{width:100%;min-height:160px;font:12px/1.6 var(--font-body);color:var(--
 const CAT={rec:'診療（記録づくり・診察の補助）',kar:'カルテ画面の便利機能',ika:'医事・レセプト',hr:'人事・総務・労務',info:'院内の情報・その他',safe:'患者情報を守るしくみ'};
 // t: tm=カルテ画面拡張 / win=Windows専用 / gas=Googleスプレッドシート / gasws=患者情報を扱うGoogle / ext=患者情報を院外AIへ / extc=作り方次第でAIへ / gpu / sep / romdep / server / link=連携先アプリ / onpnote=院内サーバー型でも使える
 // csvin=電子カルテのCSVを取り込む。カルテ端末のネット接続（問2-2）の扱いは catalog.yaml の「カルテ端末のネット」欄（v0.19.0 で追加。案は 設計/カルテ端末のネット接続_20261028.md）
+// samepc=貼る先と同じパソコンで動かす（R46 キー1つの音声入力。2026-11-25 追加）
 // 場面（技術の前提ではなく、使う場面があるか）: rehab / surg / ped / ortho / toban
 const R=[
  ['R1','診察の音声からカルテ下書きを作る','rec',3,'週単位','診察の会話を録音し、文字起こしからSOAP形式の下書きを作ってカルテに貼れる状態にします',['ext','paperok']],
@@ -220,6 +221,7 @@ const R=[
  ['R9','手術前の休薬チェック','rec',2,'30分〜半日','止めるべき薬の確認漏れを防ぎ、休止薬の照合をほぼ自動にします',['extc']],
  ['R10','小児の薬の量を自動計算','rec',1,'1時間〜','体重を入れると1回量を計算し、上限を超えたら警告します',['gas','ped']],
  ['R11','リハビリのウェブ問診と点数集計','rec',2,'2〜3日','紙の問診票をやめ、回答とスコア計算を自動にします',['gasws','rehab']],
+ ['R46','キー1つの音声入力','rec',2,'数日','キーを押して話し、もう一度押すと、誤変換と句読点を整えた文を、いま文字を打っていた欄に貼ります',['ext','samepc']],
  ['R12','カルテ画面に機能を足す準備','kar',2,'30分＋調査1〜2時間','カルテ画面に機能を足すための土台です。以降の機能はここに積み上げます。最初にカルテの会社の利用規約を確かめます',['tm']],
  ['R13','カルテ内のキーワード検索とハイライト','kar',2,'半日','探している記載へ移動して色を付けます',['tm','pre12']],
  ['R14','カルテメモを色分け・太字にする','kar',2,'半日','色が使えないメモ欄に装飾を足し、重要事項の見落としを防ぎます',['pre12','tm']],
@@ -289,7 +291,8 @@ function judge(tags,a){
     else if(a.rece==='unk') cond.push('電子カルテと会計ソフトが別のソフトかを確かめます');
   }
   if(has('gas') && (a.google==='none'||a.google==='unk')) cond.push('医院名義で無料のGoogleアカウントを作れば始められます');
-  if(has('gasws') && a.google!=='ws') cond.push('患者の情報を扱う本番では、医院名義のGoogle Workspaceが要ります（架空のデータでの試作は無料のアカウントで可）');
+  if(has('gasws') && a.google==='ws') info.push('患者の情報が Google のクラウド（スプレッドシート）に置かれる作りです（医院名義の Google Workspace の中）');
+  if(has('gasws') && a.google!=='ws') cond.push('患者の情報が Google のクラウド（スプレッドシート）に置かれる作りです。本番では医院名義のGoogle Workspaceが要ります（架空のデータでの試作は無料のアカウントで可）');
   if(has('ext') && a.ai!=='biz') cond.push('患者の情報を、医院名義で契約したAIサービスに送ることを院内で決めれば始められます');
   if(has('extc') && a.ai!=='biz') cond.push('AIに患者の情報を送らない作り方を選べば始められます');
   // カルテ端末のネット接続（問2-2。院内サーバー型のときだけ聞く）。つながらなくても「難しい」にはせず、条件として出す
@@ -298,7 +301,8 @@ function judge(tags,a){
   if(off){
     if(has('tm')&&has('ext')) cond.push('カルテ画面の記載をAIへ送るため、ネットにつながる中継のパソコンを院内に置けるかを確かめます');
     else if(has('tm')&&a.karte==='onpb') cond.push('カルテ端末がネットにつながらないので、拡張機能はUSBなどで持ち込んで入れます。カルテの会社の許可を先に確かめます');
-    if(has('ext')&&!has('tm')) cond.push('AIはネットにつながる別のパソコンで使い、できた下書きはQRコードなどでカルテ端末へ移します');
+    if(has('samepc')) cond.push('貼る先と同じパソコンで動かすので、ネットにつながらないカルテ端末では使えません。ネットにつながるパソコンでの文書づくり（紹介状・書類・メールなど）に使います');
+    else if(has('ext')&&!has('tm')) cond.push('AIはネットにつながる別のパソコンで使い、できた下書きはQRコードなどでカルテ端末へ移します');
     if(has('extc')&&!has('ios')) info.push('AIを使わない作り方なら、ネットにつながらないカルテ端末でも使えます');
     if(has('ios')) info.push('カルテ端末へはBluetoothかQRコードで送るので、ネットにつながらないカルテ端末でも使えます');
     if(has('csvin')) cond.push('電子カルテのCSVを、USBなどでネットにつながるパソコンへ移して使います');
